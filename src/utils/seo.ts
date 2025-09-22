@@ -14,7 +14,7 @@ export const SITE = {
   ],
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Jl. Pendidikan No. 1 Kananga',
+    streetAddress: 'Jl. Raya Labuan Km. 5 Kananga',
     addressLocality: 'Menes',
     addressRegion: 'Banten',
     postalCode: '42262',

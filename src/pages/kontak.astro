@@ -8,18 +8,29 @@ const breadcrumbs = [
 ---
 <Base
   title="Kontak | MA MALNU Kananga"
-  description="Kontak resmi MA MALNU Kananga mencakup alamat Jl. Pendidikan No. 1 Kananga, Menes 42262, telepon (0253) 234 567, dan email info@ma-malnukananga.sch.id."
+  description="Kontak resmi MA MALNU Kananga mencakup alamat Jl. Raya Labuan Km. 5 Kananga, Menes 42262, telepon (0253) 234 567, dan email info@ma-malnukananga.sch.id."
   breadcrumbs={breadcrumbs}
 >
   <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Hubungi Kami</h1>
-    <p>Alamat: Jl. Pendidikan No. 1 Kananga, Menes, Kabupaten Pandeglang, Banten 42262</p>
-    <p>Telepon: <a href="tel:+62253234567">(0253) 234 567</a></p>
-    <p>Email resmi: <a href="mailto:info@ma-malnukananga.sch.id">info@ma-malnukananga.sch.id</a></p>
+    <address class="contact-card">
+      <p class="contact-card__item">
+        <span class="contact-card__label">Alamat</span>
+        <span>Jl. Raya Labuan Km. 5 Kananga, Menes, Kabupaten Pandeglang, Banten 42262</span>
+      </p>
+      <p class="contact-card__item">
+        <span class="contact-card__label">Telepon</span>
+        <a href="tel:+62253234567">(0253) 234 567</a>
+      </p>
+      <p class="contact-card__item">
+        <span class="contact-card__label">Email</span>
+        <a href="mailto:info@ma-malnukananga.sch.id">info@ma-malnukananga.sch.id</a>
+      </p>
+    </address>
     <iframe
-      title="Peta lokasi MA Malnu Kananga"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.0000000000005!2d106.0!3d-6.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zNsKwMTgnMDAuMCJTIDEwNsKwMDAnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000"
+      title="Peta lokasi MA MALNU Kananga"
+      src="https://maps.google.com/maps?q=MA%20MALNU%20Kananga%2C%20Kananga%2C%20Menes&t=&z=17&ie=UTF8&iwloc=&output=embed"
       loading="lazy"
       referrerpolicy="no-referrer-when-downgrade"
       class="map"
@@ -27,10 +38,30 @@ const breadcrumbs = [
   </section>
 </Base>
 <style>
+  .contact-card {
+    display: grid;
+    gap: 0.75rem;
+    font-style: normal;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-card__item {
+    display: grid;
+    gap: 0.25rem;
+  }
+
+  .contact-card__label {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(15, 41, 16, 0.6);
+    font-weight: 600;
+  }
+
   .map {
     width: 100%;
     border: 0;
-    min-height: 300px;
+    min-height: 320px;
     border-radius: 1.5rem;
     box-shadow: var(--shadow-soft);
   }

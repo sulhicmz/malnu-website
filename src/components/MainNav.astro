@@ -33,7 +33,13 @@ const isActive = (href: string) => {
         <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
       </svg>
     </button>
-    <nav id="main-navigation" class="nav" aria-label="Navigasi utama">
+    <nav
+      id="main-navigation"
+      class="nav"
+      aria-label="Navigasi utama"
+      aria-hidden="true"
+      data-open="false"
+    >
       <ul>
         {navLinks.map((item) => (
           <li>
@@ -53,13 +59,15 @@ const isActive = (href: string) => {
 </header>
 <script type="module">
   const header = document.currentScript?.closest('.main-header');
-  const toggle = header?.querySelector('.menu-toggle');
-  const nav = header?.querySelector('#main-navigation');
+  const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const nav = header?.querySelector<HTMLElement>('#main-navigation');
   const scrim = header?.querySelector('.scrim');
+  const focusableSelector = 'a[href], button:not([disabled]), [tabindex="0"]';
   const closeMenu = (returnFocus = true) => {
     if (!toggle || !nav) return;
     toggle.setAttribute('aria-expanded', 'false');
     nav.setAttribute('data-open', 'false');
+    nav.setAttribute('aria-hidden', 'true');
     scrim?.setAttribute('hidden', '');
     if (returnFocus && typeof toggle.focus === 'function') {
       toggle.focus({ preventScroll: true });
@@ -72,6 +80,7 @@ const isActive = (href: string) => {
     const next = !expanded;
     toggle.setAttribute('aria-expanded', String(next));
     nav.setAttribute('data-open', String(next));
+    nav.setAttribute('aria-hidden', String(!next));
     if (next) {
       scrim?.removeAttribute('hidden');
       document.body.classList.add('nav-open');
@@ -84,6 +93,25 @@ const isActive = (href: string) => {
       document.body.classList.remove('nav-open');
     }
   });
+  const handleTrapFocus = (event: KeyboardEvent) => {
+    if (toggle?.getAttribute('aria-expanded') !== 'true' || !nav) return;
+    if (event.key !== 'Tab') return;
+    const navElements = Array.from(nav.querySelectorAll(focusableSelector)) as HTMLElement[];
+    const focusable: HTMLElement[] = toggle ? [toggle, ...navElements] : navElements;
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey) {
+      if (document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      }
+    } else if (document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  };
+  header?.addEventListener('keydown', handleTrapFocus);
   if (nav) {
     nav.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
@@ -94,6 +122,17 @@ const isActive = (href: string) => {
     });
   }
   scrim?.addEventListener('click', () => closeMenu());
+  const mq = window.matchMedia('(min-width: 768px)');
+  const handleMediaChange = (event: MediaQueryListEvent) => {
+    if (event.matches) {
+      closeMenu(false);
+    }
+  };
+  if ('addEventListener' in mq) {
+    mq.addEventListener('change', handleMediaChange);
+  } else {
+    mq.addListener(handleMediaChange);
+  }
   window.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
       closeMenu();
@@ -117,8 +156,28 @@ const isActive = (href: string) => {
     background: rgba(243, 255, 229, 0.95);
     background: color-mix(in srgb, #f3ffe5 82%, white);
     backdrop-filter: blur(16px);
-    box-shadow: 0 16px 40px rgba(15, 41, 16, 0.12);
+    box-shadow: 0 16px 40px rgba(15, 41, 16, 0.12), 0 0 0 1px rgba(46, 125, 50, 0.08);
     padding: 0.6rem 1rem;
+    position: relative;
+    isolation: isolate;
+    pointer-events: auto;
+  }
+
+  .nav-shell::after {
+    content: '';
+    position: absolute;
+    inset: -18px;
+    border-radius: 2.5rem;
+    background: radial-gradient(circle at top, rgba(0, 166, 166, 0.22), transparent 60%);
+    filter: blur(18px);
+    opacity: 0.65;
+    z-index: -1;
+    transition: opacity 280ms ease;
+  }
+
+  .main-header:hover .nav-shell::after,
+  .main-header:focus-within .nav-shell::after {
+    opacity: 1;
   }
 
   .brand {
@@ -189,24 +248,29 @@ const isActive = (href: string) => {
   .nav {
     position: fixed;
     inset: 0;
-    padding: clamp(1.5rem, 6vw, 3rem);
-    display: flex;
-    justify-content: flex-end;
-    background: rgba(15, 41, 16, 0.25);
-    backdrop-filter: blur(8px);
-    transform: translateX(100%);
-    transition: transform 220ms ease;
+    padding: clamp(1.75rem, 6vw, 3.25rem);
+    display: grid;
+    align-content: start;
+    justify-items: end;
+    gap: 1.5rem;
+    background: rgba(15, 41, 16, 0.45);
+    backdrop-filter: blur(14px);
+    transform: translateX(110%);
+    transition: transform 240ms ease;
+    overflow-y: auto;
+    pointer-events: auto;
   }
 
   .nav ul {
     background: rgba(243, 255, 229, 0.94);
     background: color-mix(in srgb, #f3ffe5 92%, white 10%);
-    border-radius: 1.5rem;
+    border-radius: 1.75rem;
     padding: clamp(1.5rem, 5vw, 2.5rem);
     display: grid;
     gap: 0.25rem;
-    width: min(320px, 90vw);
-    margin: auto 0 auto auto;
+    width: min(420px, 100%);
+    margin: auto;
+    box-shadow: 0 24px 50px rgba(15, 41, 16, 0.18);
   }
 
   .nav a {
@@ -222,9 +286,9 @@ const isActive = (href: string) => {
   .nav a:hover,
   .nav a:focus-visible,
   .nav a[data-active='true'] {
-    background: rgba(46, 125, 50, 0.14);
+    background: rgba(46, 125, 50, 0.18);
     color: #12461c;
-    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.45), 0 8px 16px rgba(18, 70, 28, 0.15);
   }
 
   .nav[data-open='true'] {
@@ -237,11 +301,33 @@ const isActive = (href: string) => {
     background: rgba(15, 41, 16, 0.45);
     backdrop-filter: blur(3px);
     z-index: -1;
+    opacity: 0;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+  }
+
+  .nav[data-open='true'] ~ .scrim {
+    z-index: 0;
+    opacity: 1;
+    pointer-events: auto;
   }
 
   @media (max-width: 767px) {
     body.nav-open {
       overflow: hidden;
+      touch-action: none;
+    }
+
+    .nav {
+      padding-top: clamp(5rem, 12vw, 6rem);
+    }
+
+    .nav ul {
+      width: min(92vw, 420px);
+    }
+
+    .nav-shell {
+      width: min(100%, 640px);
     }
   }
 
@@ -267,6 +353,7 @@ const isActive = (href: string) => {
       backdrop-filter: none;
       width: auto;
       display: block;
+      overflow: visible;
     }
 
     .nav ul {
@@ -276,6 +363,7 @@ const isActive = (href: string) => {
       background: transparent;
       padding: 0.25rem;
       width: auto;
+      box-shadow: none;
     }
 
     .nav a {
