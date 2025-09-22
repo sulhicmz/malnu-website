@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "siswa_id": "1234567890",
+    "nama_file": "rapor-semester-genap.pdf",
+    "url_rel": "https://files.ma-malnukananga.sch.id/arsip/rapor-semester-genap.pdf",
+    "tipe_mime": "application/pdf",
+    "diunggah_pada": "2024-06-20T02:15:00Z"
+  },
+  {
+    "id": 2,
+    "siswa_id": "1234567891",
+    "nama_file": "sertifikat-olimpiade.jpg",
+    "url_rel": "https://files.ma-malnukananga.sch.id/arsip/sertifikat-olimpiade.jpg",
+    "tipe_mime": "image/jpeg",
+    "diunggah_pada": "2024-08-12T09:00:00Z"
+  }
+]

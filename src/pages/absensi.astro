@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Absensi QR | MA Malnu Kananga" description="Panduan penggunaan absensi QR MA Malnu Kananga dengan token satu kali pakai dan verifikasi Turnstile.">
+  <section class="card">
+    <h1 class="section-title">Absensi Digital dengan QR</h1>
+    <p>
+      Setiap kegiatan mendapatkan QR unik berisi token terenkripsi. Peserta cukup memindai QR menggunakan smartphone dan
+      mengirimkan token tersebut melalui halaman verifikasi. Sistem akan memvalidasi keaslian token, waktu scan, dan
+      melakukan pencatatan otomatis ke basis data.
+    </p>
+    <ol class="steps">
+      <li>Panitia membuat QR melalui portal admin (lihat panduan di README).</li>
+      <li>Siswa memindai QR dan diarahkan ke <strong>ma-malnukananga.sch.id/absen</strong>.</li>
+      <li>Halaman verifikasi akan mengisi token otomatis, memvalidasi Turnstile, dan mengirim data ke sistem.</li>
+      <li>Peserta menerima status hadir pada layar beserta waktu scan.</li>
+    </ol>
+    <a class="button" href="/absen" rel="noopener">Buka Halaman Verifikasi</a>
+  </section>
+</BaseLayout>
+<style>
+  .steps {
+    display: grid;
+    gap: 0.75rem;
+    padding-left: 1.25rem;
+  }
+</style>

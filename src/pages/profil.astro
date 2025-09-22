@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const entries = await getCollection('profil');
+const ordered = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+<BaseLayout title="Profil | MA Malnu Kananga" description="Profil lengkap MA Malnu Kananga meliputi visi misi, sejarah, dan nilai pesantren.">
+  <section class="card">
+    <h1 class="section-title">Profil Madrasah</h1>
+    {ordered.map((item) => (
+      <article class="profil-block">
+        <h2>{item.data.title}</h2>
+        <div set:html={item.body}></div>
+      </article>
+    ))}
+  </section>
+</BaseLayout>
+<style>
+  .profil-block {
+    margin-bottom: 2rem;
+  }
+
+  .profil-block h2 {
+    color: var(--color-secondary);
+  }
+</style>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+const materi = await getCollection('materi');
+const sortedMateri = materi.sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime());
+const pengumuman = [
+  { tanggal: '2024-11-10', judul: 'Ujian akhir semester berlangsung daring', isi: 'Pastikan koneksi internet stabil dan login 15 menit sebelum sesi dimulai.' },
+  { tanggal: '2024-11-01', judul: 'Pembekalan LMS untuk siswa baru', isi: 'Ikuti sesi onboarding bersama tim TIK di aula utama.' }
+];
+const jadwal = [
+  { hari: 'Senin', kelas: 'X IPA 1', mapel: 'Matematika', waktu: '07.30 - 09.00' },
+  { hari: 'Selasa', kelas: 'XI IPS 2', mapel: 'Ekonomi', waktu: '09.15 - 10.45' },
+  { hari: 'Rabu', kelas: 'XII Keagamaan', mapel: 'Tafsir', waktu: '10.45 - 12.15' }
+];
+---
+<BaseLayout title="E-Learning | MA Malnu Kananga" description="Gerbang e-learning MA Malnu Kananga yang memuat materi digital, jadwal, dan pengumuman terkini.">
+  <section class="card">
+    <h1 class="section-title">Gateway E-Learning</h1>
+    <p>
+      Akses modul digital resmi MA Malnu Kananga. Gunakan akun madrasah untuk mengunduh materi dan mengikuti kelas
+      sinkron.
+    </p>
+    <a class="button" href="https://lms.ma-malnukananga.sch.id" target="_blank" rel="noopener">Masuk LMS Eksternal</a>
+  </section>
+
+  <section class="grid grid-2">
+    <article class="card">
+      <h2 class="section-title">Pengumuman</h2>
+      <ul class="announce">
+        {pengumuman.map((item) => (
+          <li>
+            <strong>{new Date(item.tanggal).toLocaleDateString('id-ID')}</strong>
+            <p>{item.judul}</p>
+            <small>{item.isi}</small>
+          </li>
+        ))}
+      </ul>
+    </article>
+    <article class="card">
+      <h2 class="section-title">Jadwal Kelas Virtual</h2>
+      <div class="table-wrapper">
+        <table>
+          <caption class="sr-only">Jadwal kelas e-learning</caption>
+          <thead>
+            <tr>
+              <th scope="col">Hari</th>
+              <th scope="col">Kelas</th>
+              <th scope="col">Mata Pelajaran</th>
+              <th scope="col">Waktu</th>
+            </tr>
+          </thead>
+          <tbody>
+            {jadwal.map((item) => (
+              <tr>
+                <td>{item.hari}</td>
+                <td>{item.kelas}</td>
+                <td>{item.mapel}</td>
+                <td>{item.waktu}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Materi Digital Terbaru</h2>
+    <div class="grid grid-2">
+      {sortedMateri.map((item) => (
+        <article class="card materi">
+          <h3>{item.data.title}</h3>
+          <p class="meta">{item.data.subject} · Kelas {item.data.grade}</p>
+          <p>Dipublikasikan {new Date(item.data.publishedAt).toLocaleDateString('id-ID')}</p>
+          <div set:html={item.body}></div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .announce {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .announce li {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 166, 166, 0.08);
+  }
+
+  .materi {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .meta {
+    color: rgba(15, 31, 16, 0.7);
+  }
+</style>

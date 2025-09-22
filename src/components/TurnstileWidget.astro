@@ -1,0 +1,22 @@
+---
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || '1x00000000000000000000AA';
+const { action = 'form', theme = 'auto' } = Astro.props;
+---
+<div class="turnstile-wrapper">
+  <div class="cf-turnstile" data-sitekey={siteKey} data-theme={theme} data-action={action}></div>
+</div>
+<script>
+  if (typeof window !== 'undefined' && !window.__turnstileScriptLoaded) {
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+    window.__turnstileScriptLoaded = true;
+  }
+</script>
+<style>
+  .turnstile-wrapper {
+    margin-top: 1rem;
+  }
+</style>

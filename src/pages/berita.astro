@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsList from '../components/NewsList.astro';
+---
+<BaseLayout title="Berita Pendidikan" description="Kumpulan berita pendidikan terkini untuk warga MA Malnu Kananga.">
+  <NewsList title="Berita Pendidikan" endpoint="/api/news" emptyText="Belum ada berita." />
+</BaseLayout>

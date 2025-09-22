@@ -1,0 +1,89 @@
+---
+const { endpoint = '/api/news', title = 'Berita Terbaru', emptyText = 'Belum ada data.' } = Astro.props;
+---
+<section class="card news-section" aria-live="polite">
+  <div class="section-heading">
+    <h2 class="section-title">{title}</h2>
+    <button class="refresh" type="button">Segarkan</button>
+  </div>
+  <div class="news-list" data-endpoint={endpoint} data-empty={emptyText}>
+    <p>Memuat data...</p>
+  </div>
+</section>
+<script>
+  const section = document.currentScript?.closest('.news-section');
+  const refreshButton = section?.querySelector('.refresh');
+  const list = section?.querySelector('.news-list');
+
+  async function loadNews() {
+    if (!list) return;
+    const endpoint = list.getAttribute('data-endpoint') ?? '/api/news';
+    list.innerHTML = '<p>Memuat data...</p>';
+    try {
+      const res = await fetch(endpoint, { headers: { Accept: 'application/json' } });
+      const payload = await res.json();
+      if (!payload.success || !Array.isArray(payload.data) || payload.data.length === 0) {
+        list.innerHTML = `<p>${list.getAttribute('data-empty') ?? 'Tidak ada data.'}</p>`;
+        return;
+      }
+      list.innerHTML = payload.data
+        .map(
+          (item) => `
+            <article class="news-card">
+              <h3>${item.title}</h3>
+              <p class="meta">${item.source} · ${new Date(item.published_at).toLocaleDateString('id-ID')}</p>
+              <p>${item.summary ?? ''}</p>
+              <a class="button" href="${item.link}" target="_blank" rel="noopener">Baca</a>
+            </article>
+          `
+        )
+        .join('');
+    } catch (error) {
+      console.error(error);
+      list.innerHTML = '<p>Gagal memuat data, gunakan cache offline.</p>';
+    }
+  }
+
+  refreshButton?.addEventListener('click', () => {
+    loadNews();
+  });
+
+  loadNews();
+</script>
+<style>
+  .section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .refresh {
+    background: rgba(0, 166, 166, 0.18);
+    color: var(--color-secondary);
+    padding: 0.5rem 1rem;
+  }
+
+  .news-list {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .news-card {
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 1rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .news-card h3 {
+    margin-top: 0;
+  }
+
+  .news-card .meta {
+    font-size: 0.85rem;
+    color: rgba(15, 31, 16, 0.7);
+  }
+</style>

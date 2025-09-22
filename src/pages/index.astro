@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NewsList from '../components/NewsList.astro';
+const pageTitle = 'Madrasah Aliyah Malnu Kananga';
+const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, informasi alumni, berita pendidikan, dan layanan beasiswa.';
+---
+<BaseLayout title={`${pageTitle} | Beranda`} description={description}>
+  <section class="hero card">
+    <div>
+      <p class="eyebrow">Madrasah Aliyah Malnu Kananga</p>
+      <h1>
+        Mencetak generasi islami, unggul akademik dan berdaya saing global.
+      </h1>
+      <p>
+        Selamat datang di portal digital MA Malnu Kananga. Temukan layanan terpadu untuk peserta didik, guru, orang tua,
+        dan alumni dalam satu genggaman.
+      </p>
+      <div class="cta-group">
+        <a class="button" href="/ppdb">Daftar PPDB</a>
+        <a class="button secondary" href="/e-learning">Masuk E-Learning</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <h2>Agenda Terkini</h2>
+      <ul>
+        <li><strong>25 Nov:</strong> Webinar Digitalisasi Madrasah</li>
+        <li><strong>1 Des:</strong> Batas akhir pengisian rapor RDM</li>
+        <li><strong>5 Des:</strong> Kegiatan Maulid Nabi bersama santri</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="grid highlights">
+    <article class="card">
+      <h2 class="section-title">PPDB Online 2025</h2>
+      <p>
+        Pendaftaran peserta didik baru kini serba daring. Siapkan berkas dan lengkapi formulir secara mudah dengan
+        verifikasi otomatis.
+      </p>
+      <a class="button" href="/ppdb">Pelajari Alur</a>
+    </article>
+    <article class="card">
+      <h2 class="section-title">E-Learning</h2>
+      <p>
+        Akses materi pembelajaran, jadwal kelas, dan pengumuman penting kapan pun dengan modul digital yang terhubung
+        dengan guru pengampu.
+      </p>
+      <a class="button" href="/e-learning">Lihat Materi</a>
+    </article>
+    <article class="card">
+      <h2 class="section-title">Jejaring Alumni</h2>
+      <p>
+        Terhubung dengan alumni lintas angkatan, bangun kolaborasi karier, dan bagikan kisah inspiratif melalui katalog
+        alumni interaktif.
+      </p>
+      <a class="button" href="/alumni">Data Alumni</a>
+    </article>
+  </section>
+
+  <section class="card info-section">
+    <h2 class="section-title">Layanan Cepat</h2>
+    <div class="grid grid-2 quick-service">
+      <div>
+        <h3>Rapor Digital Madrasah</h3>
+        <p>Gunakan portal resmi RDM untuk melihat nilai dan progres belajar secara real-time.</p>
+        <a class="button" href="https://rdm.ma-malnukananga.sch.id" target="_blank" rel="noopener">Masuk RDM</a>
+      </div>
+      <div>
+        <h3>Absensi QR</h3>
+        <p>Pindai QR di setiap kegiatan untuk pencatatan kehadiran otomatis dengan proteksi token.</p>
+        <a class="button" href="/absensi">Panduan Absensi</a>
+      </div>
+    </div>
+  </section>
+
+  <NewsList title="Berita Pendidikan" endpoint="/api/news" emptyText="Belum ada berita dari cache." />
+  <NewsList title="Informasi Beasiswa" endpoint="/api/scholarships" emptyText="Belum ada data beasiswa." />
+</BaseLayout>
+<style>
+  .hero {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 3vw, 3rem);
+    background: radial-gradient(circle at top right, rgba(0, 166, 166, 0.25), transparent 55%), rgba(255, 255, 255, 0.8);
+  }
+
+  .eyebrow {
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .secondary {
+    background: rgba(0, 166, 166, 0.15);
+    color: var(--color-secondary);
+  }
+
+  .hero-card {
+    border-radius: 1.5rem;
+    background: rgba(46, 125, 50, 0.08);
+    padding: 1.25rem;
+    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.15);
+  }
+
+  .highlights {
+    margin-top: 2rem;
+  }
+
+  .info-section {
+    margin-top: 2rem;
+  }
+
+  .quick-service {
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero {
+      grid-template-columns: 3fr 2fr;
+      align-items: center;
+    }
+
+    .highlights {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

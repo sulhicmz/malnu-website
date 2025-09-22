@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nama": "Siti Rahmawati",
+    "angkatan": "2015",
+    "pekerjaan": "Guru",
+    "kontak_opsional": "instagram.com/sititeaches"
+  },
+  {
+    "id": 2,
+    "nama": "Ahmad Fauzan",
+    "angkatan": "2018",
+    "pekerjaan": "Pengembang Perangkat Lunak",
+    "kontak_opsional": "linkedin.com/in/fauzanahmad"
+  }
+]

@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TurnstileWidget from '../components/TurnstileWidget.astro';
+---
+<BaseLayout title="Alumni | MA Malnu Kananga" description="Katalog alumni MA Malnu Kananga dan formulir kontribusi data alumni baru.">
+  <section class="card">
+    <h1 class="section-title">Katalog Alumni</h1>
+    <p>
+      Data alumni ini bersumber dari basis data madrasah. Alumni dapat mengirim pembaruan profil melalui formulir di bawah.
+    </p>
+    <div class="alumni-list" aria-live="polite">
+      <p>Memuat data alumni...</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Tambahkan Data Alumni</h2>
+    <form class="alumni-form" aria-describedby="alumni-status">
+      <div class="form-grid">
+        <label>
+          Nama
+          <input type="text" name="nama" required />
+        </label>
+        <label>
+          Angkatan
+          <input type="text" name="angkatan" required pattern="\\d{4}" inputmode="numeric" />
+        </label>
+        <label>
+          Pekerjaan Saat Ini
+          <input type="text" name="pekerjaan" required />
+        </label>
+        <label>
+          Kontak Opsional
+          <input type="text" name="kontak_opsional" placeholder="Link atau email" />
+        </label>
+      </div>
+      <TurnstileWidget action="alumni" />
+      <button type="submit">Kirim Data</button>
+      <p id="alumni-status" role="status"></p>
+    </form>
+  </section>
+</BaseLayout>
+<script>
+  const listEl = document.querySelector('.alumni-list');
+  const status = document.querySelector('#alumni-status');
+  const alumniForm = document.querySelector('.alumni-form');
+
+  async function loadAlumni() {
+    if (!listEl) return;
+    listEl.innerHTML = '<p>Memuat data alumni...</p>';
+    try {
+      const res = await fetch('/api/alumni', { headers: { Accept: 'application/json' } });
+      const payload = await res.json();
+      if (!payload.success || !Array.isArray(payload.data) || payload.data.length === 0) {
+        listEl.innerHTML = '<p>Belum ada data alumni. Jadilah yang pertama!</p>';
+        return;
+      }
+      listEl.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <caption class="sr-only">Daftar alumni</caption>
+            <thead>
+              <tr>
+                <th scope="col">Nama</th>
+                <th scope="col">Angkatan</th>
+                <th scope="col">Pekerjaan</th>
+                <th scope="col">Kontak</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${payload.data
+                .map(
+                  (alumni) => `
+                    <tr>
+                      <td>${alumni.nama}</td>
+                      <td>${alumni.angkatan}</td>
+                      <td>${alumni.pekerjaan ?? '-'}</td>
+                      <td>${alumni.kontak_opsional ? `<a href="${alumni.kontak_opsional.startsWith('http') ? alumni.kontak_opsional : `https://${alumni.kontak_opsional}`}" target="_blank" rel="noopener">Tautan</a>` : '-'}</td>
+                    </tr>
+                  `
+                )
+                .join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      listEl.innerHTML = '<p>Gagal memuat data alumni. Coba lagi nanti.</p>';
+    }
+  }
+
+  loadAlumni();
+
+  alumniForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(event.target instanceof HTMLFormElement) || !status) return;
+    status.textContent = 'Mengirim data...';
+    try {
+      const payload = Object.fromEntries(new FormData(event.target).entries());
+      const res = await fetch('/api/alumni', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json();
+      if (result.success) {
+        status.textContent = 'Terima kasih! Data alumni menunggu verifikasi.';
+        event.target.reset();
+        await loadAlumni();
+      } else {
+        status.textContent = result.error ?? 'Gagal mengirim data alumni.';
+      }
+    } catch (error) {
+      console.error(error);
+      status.textContent = 'Terjadi gangguan jaringan. Coba lagi.';
+    }
+  });
+</script>
+<style>
+  .alumni-list {
+    margin-top: 1.5rem;
+  }
+
+  .alumni-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .form-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  input {
+    padding: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(46, 125, 50, 0.25);
+    background: rgba(255, 255, 255, 0.9);
+  }
+</style>

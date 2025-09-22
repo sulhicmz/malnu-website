@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TurnstileWidget from '../components/TurnstileWidget.astro';
+const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
+---
+<BaseLayout title="PPDB Online | MA Malnu Kananga" description="Formulir pendaftaran peserta didik baru MA Malnu Kananga dengan verifikasi Cloudflare Turnstile.">
+  <section class="card">
+    <h1 class="section-title">PPDB Online</h1>
+    <p>
+      Silakan lengkapi formulir berikut untuk mendaftar sebagai calon peserta didik baru. Pastikan data sesuai dokumen
+      resmi. Setelah submit, nomor pendaftaran akan dikirimkan melalui layar dan email (bila diisi).
+    </p>
+    <p class="mode-info">Mode operasi: <strong>{mode === 'readonly' ? 'Demo (tanpa simpan)' : 'Produksi'}</strong></p>
+    <form class="ppdb-form" aria-describedby="ppdb-status">
+      <div class="form-grid">
+        <label>
+          Nama Lengkap
+          <input type="text" name="nama" required autocomplete="name" />
+        </label>
+        <label>
+          NISN
+          <input type="text" name="nisn" required pattern="\\d{10}" inputmode="numeric" />
+        </label>
+        <label>
+          Tempat Tanggal Lahir
+          <input type="text" name="ttl" placeholder="Pandeglang, 01 Januari 2008" required />
+        </label>
+        <label class="full">
+          Alamat Lengkap
+          <textarea name="alamat" rows="3" required></textarea>
+        </label>
+        <label>
+          Kontak Orang Tua/Wali
+          <input type="tel" name="kontak" required placeholder="08xxxxxxxxxx" />
+        </label>
+        <label>
+          Jurusan Pilihan
+          <select name="jurusan_pilihan" required>
+            <option value="">-- Pilih Jurusan --</option>
+            <option value="IPA">IPA</option>
+            <option value="IPS">IPS</option>
+            <option value="Keagamaan">Keagamaan</option>
+          </select>
+        </label>
+      </div>
+      <TurnstileWidget action="ppdb" />
+      <button type="submit">Kirim Pendaftaran</button>
+      <p id="ppdb-status" role="status"></p>
+    </form>
+  </section>
+</BaseLayout>
+<script>
+  const form = document.querySelector('.ppdb-form');
+  const status = document.querySelector('#ppdb-status');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(event.target instanceof HTMLFormElement) || !status) return;
+    status.textContent = 'Mengirim data...';
+    const formData = new FormData(event.target);
+    try {
+      const payload = Object.fromEntries(formData.entries());
+      const response = await fetch('/api/ppdb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (result.success) {
+        status.textContent = `Berhasil disimpan! Nomor pendaftaran: ${result.data?.nomorPendaftaran ?? 'cek email'}`;
+        event.target.reset();
+      } else {
+        status.textContent = result.error ?? 'Gagal menyimpan data.';
+      }
+    } catch (err) {
+      console.error(err);
+      status.textContent = 'Terjadi kendala jaringan. Silakan coba lagi.';
+    }
+  });
+</script>
+<style>
+  .ppdb-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .form-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 0.75rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(46, 125, 50, 0.25);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .full {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 768px) {
+    .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .mode-info {
+    background: rgba(0, 166, 166, 0.12);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    display: inline-block;
+  }
+</style>
