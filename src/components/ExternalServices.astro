@@ -52,6 +52,7 @@ const sectionLabel = variant === 'compact' ? heading : undefined;
     background: rgba(243, 255, 229, 0.85);
     box-shadow: 0 20px 45px rgba(15, 41, 16, 0.12);
     backdrop-filter: blur(12px);
+    width: min(1100px, 100%);
   }
 
   .external-services__intro {
@@ -75,22 +76,10 @@ const sectionLabel = variant === 'compact' ? heading : undefined;
   .external-services__grid {
     list-style: none;
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: clamp(0.85rem, 3vw, 1.5rem);
     padding: 0;
     margin: 0;
-  }
-
-  @media (min-width: 480px) {
-    .external-services__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
-  @media (min-width: 992px) {
-    .external-services__grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-    }
   }
 
   .external-services__item {
@@ -168,7 +157,7 @@ const sectionLabel = variant === 'compact' ? heading : undefined;
   }
 
   .external-services--compact .external-services__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     gap: 0.5rem;
   }
 
@@ -188,15 +177,9 @@ const sectionLabel = variant === 'compact' ? heading : undefined;
     display: none;
   }
 
-  @media (min-width: 600px) {
-    .external-services--compact .external-services__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
-
   @media (min-width: 1024px) {
-    .external-services--compact .external-services__grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+    .external-services {
+      padding: clamp(2rem, 5vw, 3rem);
     }
   }
 </style>

@@ -19,7 +19,7 @@ const isActive = (href: string) => {
 };
 ---
 <header class="main-header" role="banner">
-  <div class="nav-shell">
+  <div class="main-header__container">
     <a class="brand" href="/" aria-label="Beranda MA Malnu Kananga">
       <span class="brand-mark" aria-hidden="true">MA</span>
       <span class="brand-text">
@@ -40,19 +40,21 @@ const isActive = (href: string) => {
       aria-hidden="true"
       data-open="false"
     >
-      <ul>
-        {navLinks.map((item) => (
-          <li>
-            <a
-              href={item.href}
-              data-active={isActive(item.href)}
-              aria-current={isActive(item.href) ? 'page' : undefined}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div class="nav__panel">
+        <ul>
+          {navLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                data-active={isActive(item.href)}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </nav>
   </div>
   <div class="scrim" hidden></div>
@@ -61,14 +63,32 @@ const isActive = (href: string) => {
   const header = document.currentScript?.closest('.main-header');
   const toggle = header?.querySelector<HTMLButtonElement>('.menu-toggle');
   const nav = header?.querySelector<HTMLElement>('#main-navigation');
+  const panel = nav?.querySelector<HTMLElement>('.nav__panel');
   const scrim = header?.querySelector('.scrim');
+  const showScrim = () => {
+    scrim?.removeAttribute('hidden');
+    window.requestAnimationFrame(() => {
+      scrim?.classList.add('is-active');
+    });
+  };
+  const hideScrim = () => {
+    if (!scrim) return;
+    scrim.classList.remove('is-active');
+    window.setTimeout(() => {
+      scrim.setAttribute('hidden', '');
+    }, 220);
+  };
   const focusableSelector = 'a[href], button:not([disabled]), [tabindex="0"]';
   const closeMenu = (returnFocus = true) => {
     if (!toggle || !nav) return;
     toggle.setAttribute('aria-expanded', 'false');
     nav.setAttribute('data-open', 'false');
     nav.setAttribute('aria-hidden', 'true');
-    scrim?.setAttribute('hidden', '');
+    const label = toggle.querySelector('.sr-only');
+    if (label) {
+      label.textContent = 'Buka menu navigasi';
+    }
+    hideScrim();
     if (returnFocus && typeof toggle.focus === 'function') {
       toggle.focus({ preventScroll: true });
     }
@@ -81,22 +101,26 @@ const isActive = (href: string) => {
     toggle.setAttribute('aria-expanded', String(next));
     nav.setAttribute('data-open', String(next));
     nav.setAttribute('aria-hidden', String(!next));
+    const label = toggle.querySelector('.sr-only');
+    if (label) {
+      label.textContent = next ? 'Tutup menu navigasi' : 'Buka menu navigasi';
+    }
     if (next) {
-      scrim?.removeAttribute('hidden');
+      showScrim();
       document.body.classList.add('nav-open');
-      const firstLink = nav.querySelector('a');
-      if (firstLink && typeof firstLink.focus === 'function') {
-        firstLink.focus({ preventScroll: true });
+      const focusTarget = panel?.querySelector('a');
+      if (focusTarget && typeof focusTarget.focus === 'function') {
+        focusTarget.focus({ preventScroll: true });
       }
     } else {
-      scrim?.setAttribute('hidden', '');
+      hideScrim();
       document.body.classList.remove('nav-open');
     }
   });
   const handleTrapFocus = (event: KeyboardEvent) => {
     if (toggle?.getAttribute('aria-expanded') !== 'true' || !nav) return;
     if (event.key !== 'Tab') return;
-    const navElements = Array.from(nav.querySelectorAll(focusableSelector)) as HTMLElement[];
+    const navElements = Array.from(panel?.querySelectorAll(focusableSelector) ?? []) as HTMLElement[];
     const focusable: HTMLElement[] = toggle ? [toggle, ...navElements] : navElements;
     if (!focusable.length) return;
     const first = focusable[0];
@@ -112,8 +136,8 @@ const isActive = (href: string) => {
     }
   };
   header?.addEventListener('keydown', handleTrapFocus);
-  if (nav) {
-    nav.querySelectorAll('a').forEach((link) => {
+  if (panel) {
+    panel.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         if (window.matchMedia('(max-width: 767px)').matches) {
           closeMenu(false);
@@ -123,7 +147,7 @@ const isActive = (href: string) => {
   }
   scrim?.addEventListener('click', () => closeMenu());
   const mq = window.matchMedia('(min-width: 768px)');
-  const handleMediaChange = (event: MediaQueryListEvent) => {
+  const handleMediaChange = (event: MediaQueryListEvent | MediaQueryList) => {
     if (event.matches) {
       closeMenu(false);
     }
@@ -142,42 +166,26 @@ const isActive = (href: string) => {
 <style>
   .main-header {
     position: sticky;
-    top: 0.75rem;
-    z-index: 100;
-    padding: 0 clamp(1rem, 4vw, 2.5rem);
+    top: 0;
+    z-index: 90;
+    padding: clamp(0.75rem, 2vw, 1.25rem) clamp(1rem, 5vw, 2rem) 0;
+    pointer-events: none;
   }
 
-  .nav-shell {
+  .main-header__container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    border-radius: 1.5rem;
-    background: rgba(243, 255, 229, 0.95);
-    background: color-mix(in srgb, #f3ffe5 82%, white);
-    backdrop-filter: blur(16px);
-    box-shadow: 0 16px 40px rgba(15, 41, 16, 0.12), 0 0 0 1px rgba(46, 125, 50, 0.08);
-    padding: 0.6rem 1rem;
-    position: relative;
-    isolation: isolate;
+    flex-wrap: nowrap;
+    max-width: 1100px;
+    margin: 0 auto;
+    border-radius: 1.25rem;
+    background: rgba(243, 255, 229, 0.92);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 12px 32px rgba(10, 31, 12, 0.16);
+    padding: 0.6rem 0.85rem;
     pointer-events: auto;
-  }
-
-  .nav-shell::after {
-    content: '';
-    position: absolute;
-    inset: -18px;
-    border-radius: 2.5rem;
-    background: radial-gradient(circle at top, rgba(0, 166, 166, 0.22), transparent 60%);
-    filter: blur(18px);
-    opacity: 0.65;
-    z-index: -1;
-    transition: opacity 280ms ease;
-  }
-
-  .main-header:hover .nav-shell::after,
-  .main-header:focus-within .nav-shell::after {
-    opacity: 1;
   }
 
   .brand {
@@ -186,6 +194,8 @@ const isActive = (href: string) => {
     gap: 0.75rem;
     min-height: 48px;
     color: #0f2910;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .brand:focus-visible {
@@ -201,7 +211,7 @@ const isActive = (href: string) => {
     width: 44px;
     height: 44px;
     border-radius: 18px;
-    background: linear-gradient(135deg, #2e7d32, #205823);
+    background: linear-gradient(140deg, #2e7d32, #1d4f25);
     color: #f3ffe5;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -211,10 +221,16 @@ const isActive = (href: string) => {
     display: flex;
     flex-direction: column;
     line-height: 1.15;
+    min-width: 0;
+  }
+
+  .brand-text strong {
+    font-size: clamp(1rem, 3.5vw, 1.15rem);
+    line-height: 1.1;
   }
 
   .brand-text span {
-    font-size: 0.75rem;
+    font-size: clamp(0.7rem, 2.4vw, 0.8rem);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: rgba(15, 41, 16, 0.7);
@@ -224,8 +240,8 @@ const isActive = (href: string) => {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 48px;
-    min-height: 48px;
+    width: 48px;
+    height: 48px;
     border: none;
     border-radius: 1rem;
     background: rgba(0, 166, 166, 0.12);
@@ -248,34 +264,40 @@ const isActive = (href: string) => {
   .nav {
     position: fixed;
     inset: 0;
-    padding: clamp(1.75rem, 6vw, 3.25rem);
-    display: grid;
-    align-content: start;
-    justify-items: end;
-    gap: 1.5rem;
-    background: rgba(15, 41, 16, 0.45);
-    backdrop-filter: blur(14px);
-    transform: translateX(110%);
-    transition: transform 240ms ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: clamp(5rem, 15vw, 6rem) clamp(1.25rem, 8vw, 2.5rem) 2rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 220ms ease;
     overflow-y: auto;
+  }
+
+  .nav__panel {
+    width: min(22rem, 100%);
+    background: #fdfef9;
+    border-radius: 1.5rem;
+    padding: clamp(1.25rem, 6vw, 1.75rem);
+    box-shadow: 0 22px 45px rgba(12, 34, 16, 0.22);
+    transform: translateY(-12px);
+    transition: transform 240ms ease;
+    display: grid;
+    gap: 0.5rem;
     pointer-events: auto;
   }
 
   .nav ul {
-    background: rgba(243, 255, 229, 0.94);
-    background: color-mix(in srgb, #f3ffe5 92%, white 10%);
-    border-radius: 1.75rem;
-    padding: clamp(1.5rem, 5vw, 2.5rem);
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
-    gap: 0.25rem;
-    width: min(420px, 100%);
-    margin: auto;
-    box-shadow: 0 24px 50px rgba(15, 41, 16, 0.18);
+    gap: 0.35rem;
   }
 
   .nav a {
     display: block;
-    padding: 0.85rem 1.1rem;
+    padding: 0.85rem 1rem;
     border-radius: 1rem;
     font-weight: 600;
     color: #0f2910;
@@ -288,26 +310,33 @@ const isActive = (href: string) => {
   .nav a[data-active='true'] {
     background: rgba(46, 125, 50, 0.18);
     color: #12461c;
-    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.45), 0 8px 16px rgba(18, 70, 28, 0.15);
+    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.45), 0 8px 16px rgba(18, 70, 28, 0.12);
   }
 
   .nav[data-open='true'] {
-    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav[data-open='true'] .nav__panel {
+    transform: translateY(0);
   }
 
   .scrim {
     position: fixed;
     inset: 0;
-    background: rgba(15, 41, 16, 0.45);
-    backdrop-filter: blur(3px);
-    z-index: -1;
+    background: rgba(8, 25, 12, 0.65);
+    backdrop-filter: blur(6px);
     opacity: 0;
-    transition: opacity 220ms ease;
     pointer-events: none;
+    transition: opacity 200ms ease;
   }
 
-  .nav[data-open='true'] ~ .scrim {
-    z-index: 0;
+  .scrim[hidden] {
+    display: none;
+  }
+
+  .scrim.is-active {
     opacity: 1;
     pointer-events: auto;
   }
@@ -318,26 +347,14 @@ const isActive = (href: string) => {
       touch-action: none;
     }
 
-    .nav {
-      padding-top: clamp(5rem, 12vw, 6rem);
-    }
-
-    .nav ul {
-      width: min(92vw, 420px);
-    }
-
-    .nav-shell {
-      width: min(100%, 640px);
+    .main-header__container {
+      padding-right: 0.6rem;
     }
   }
 
   @media (min-width: 768px) {
     .main-header {
-      top: 1rem;
-    }
-
-    .nav-shell {
-      padding: 0.4rem 0.8rem;
+      padding-bottom: clamp(0.75rem, 2vw, 1.5rem);
     }
 
     .menu-toggle {
@@ -347,23 +364,27 @@ const isActive = (href: string) => {
     .nav {
       position: static;
       inset: auto;
-      transform: none !important;
       padding: 0;
-      background: transparent;
-      backdrop-filter: none;
+      opacity: 1 !important;
+      pointer-events: auto;
+    }
+
+    .nav__panel {
       width: auto;
-      display: block;
-      overflow: visible;
+      background: transparent;
+      border-radius: 999px;
+      box-shadow: none;
+      padding: 0.25rem;
+      transform: none !important;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .nav ul {
       display: flex;
       align-items: center;
       gap: 0.25rem;
-      background: transparent;
-      padding: 0.25rem;
-      width: auto;
-      box-shadow: none;
     }
 
     .nav a {
@@ -373,6 +394,13 @@ const isActive = (href: string) => {
 
     .scrim {
       display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-header__container {
+      padding: 0.5rem 1.25rem;
+      gap: 1.5rem;
     }
   }
 
