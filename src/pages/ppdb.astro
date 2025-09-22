@@ -2,16 +2,32 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TurnstileWidget from '../components/TurnstileWidget.astro';
 const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
+const timeline = [
+  { tahap: 'Pengisian formulir', tanggal: '1 November - 15 Desember 2024' },
+  { tahap: 'Seleksi berkas', tanggal: '16 - 22 Desember 2024' },
+  { tahap: 'Tes akademik & wawancara', tanggal: '6 - 7 Januari 2025' },
+  { tahap: 'Pengumuman resmi', tanggal: '10 Januari 2025' }
+];
 ---
-<BaseLayout title="PPDB Online | MA Malnu Kananga" description="Formulir pendaftaran peserta didik baru MA Malnu Kananga dengan verifikasi Cloudflare Turnstile.">
-  <section class="card">
-    <h1 class="section-title">PPDB Online</h1>
+<BaseLayout
+  title="PPDB Online | MA Malnu Kananga"
+  description="Formulir pendaftaran peserta didik baru MA Malnu Kananga dengan verifikasi Cloudflare Turnstile."
+>
+  <section class="card ppdb-hero">
+    <span class="section-kicker">PPDB Online</span>
+    <h1 class="section-title">Penerimaan Peserta Didik Baru 2025</h1>
     <p>
-      Silakan lengkapi formulir berikut untuk mendaftar sebagai calon peserta didik baru. Pastikan data sesuai dokumen
-      resmi. Setelah submit, nomor pendaftaran akan dikirimkan melalui layar dan email (bila diisi).
+      Lengkapi data calon siswa dengan teliti sesuai dokumen resmi. Sistem kami mengenkripsi setiap pengiriman dan hanya
+      menyimpan data di lingkungan server madrasah.
     </p>
-    <p class="mode-info">Mode operasi: <strong>{mode === 'readonly' ? 'Demo (tanpa simpan)' : 'Produksi'}</strong></p>
-    <form class="ppdb-form" aria-describedby="ppdb-status">
+    <div class="ppdb-mode" role="status">
+      Mode operasi: <strong>{mode === 'readonly' ? 'Demo (tanpa simpan)' : 'Produksi'}</strong>
+    </div>
+  </section>
+
+  <section class="ppdb-layout">
+    <form class="card ppdb-form" aria-describedby="ppdb-status">
+      <h2>Formulir Pendaftaran</h2>
       <div class="form-grid">
         <label>
           Nama Lengkap
@@ -25,13 +41,13 @@ const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
           Tempat Tanggal Lahir
           <input type="text" name="ttl" placeholder="Pandeglang, 01 Januari 2008" required />
         </label>
-        <label class="full">
-          Alamat Lengkap
-          <textarea name="alamat" rows="3" required></textarea>
-        </label>
         <label>
           Kontak Orang Tua/Wali
           <input type="tel" name="kontak" required placeholder="08xxxxxxxxxx" />
+        </label>
+        <label class="full">
+          Alamat Lengkap
+          <textarea name="alamat" rows="3" required></textarea>
         </label>
         <label>
           Jurusan Pilihan
@@ -42,11 +58,44 @@ const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
             <option value="Keagamaan">Keagamaan</option>
           </select>
         </label>
+        <label>
+          Email Aktif (opsional)
+          <input type="email" name="email" placeholder="nama@email.com" />
+        </label>
       </div>
       <TurnstileWidget action="ppdb" />
       <button type="submit">Kirim Pendaftaran</button>
-      <p id="ppdb-status" role="status"></p>
+      <p id="ppdb-status" role="status" class="ppdb-status"></p>
     </form>
+
+    <aside class="card ppdb-info">
+      <h2>Informasi Penting</h2>
+      <div class="timeline">
+        {timeline.map((item) => (
+          <div class="timeline-item">
+            <span class="dot" aria-hidden="true"></span>
+            <div>
+              <strong>{item.tahap}</strong>
+              <p>{item.tanggal}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="details-group">
+        <details>
+          <summary>Berkas yang perlu disiapkan</summary>
+          <ul>
+            <li>Scan kartu keluarga dan akta kelahiran</li>
+            <li>Raport semester terakhir (format PDF)</li>
+            <li>Surat rekomendasi madrasah/pesantren (opsional)</li>
+          </ul>
+        </details>
+        <details>
+          <summary>Ketentuan tes</summary>
+          <p>Peserta mengikuti tes akademik, baca tulis Qur'an, serta wawancara kepribadian dan motivasi belajar.</p>
+        </details>
+      </div>
+    </aside>
   </section>
 </BaseLayout>
 <script>
@@ -78,9 +127,34 @@ const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
   });
 </script>
 <style>
-  .ppdb-form {
+  .ppdb-hero {
     display: grid;
     gap: 1rem;
+  }
+
+  .ppdb-mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background: rgba(0, 166, 166, 0.12);
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  .ppdb-layout {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .ppdb-form {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .ppdb-form h2 {
+    margin: 0;
   }
 
   .form-grid {
@@ -88,35 +162,60 @@ const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
     gap: 1rem;
   }
 
-  label {
-    display: grid;
-    gap: 0.5rem;
-    font-weight: 600;
-  }
-
-  input,
-  textarea,
-  select {
-    padding: 0.75rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(46, 125, 50, 0.25);
-    background: rgba(255, 255, 255, 0.9);
-  }
-
-  .full {
+  .form-grid .full {
     grid-column: 1 / -1;
   }
 
-  @media (min-width: 768px) {
+  .ppdb-status {
+    min-height: 1.5rem;
+    color: var(--color-secondary);
+    font-weight: 600;
+  }
+
+  .ppdb-info {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .timeline {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.9rem;
+    align-items: start;
+  }
+
+  .dot {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    box-shadow: 0 0 0 6px rgba(0, 166, 166, 0.15);
+  }
+
+  .timeline p {
+    margin: 0.2rem 0 0;
+    color: var(--color-muted-soft);
+  }
+
+  .details-group ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.2rem;
+    color: var(--color-muted-soft);
+  }
+
+  @media (min-width: 860px) {
+    .ppdb-layout {
+      grid-template-columns: 3fr 2fr;
+      align-items: start;
+    }
+
     .form-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
-
-  .mode-info {
-    background: rgba(0, 166, 166, 0.12);
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    display: inline-block;
   }
 </style>

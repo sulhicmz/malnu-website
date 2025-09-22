@@ -2,25 +2,70 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 <BaseLayout title="Kontak" description="Hubungi Madrasah Aliyah Malnu Kananga untuk informasi lebih lanjut.">
-  <section class="card">
-    <h1 class="section-title">Hubungi Kami</h1>
-    <p>Alamat: Jalan Pendidikan No. 1 Kananga, Pandeglang, Banten 42251.</p>
-    <p>Telepon: (0253) 123456</p>
-    <p>Email resmi: info@ma-malnukananga.sch.id</p>
-    <iframe
-      title="Peta lokasi MA Malnu Kananga"
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.0000000000005!2d106.0!3d-6.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zNsKwMTgnMDAuMCJTIDEwNsKwMDAnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      class="map"
-    ></iframe>
+  <section class="card kontak-hero">
+    <span class="section-kicker">Hubungi kami</span>
+    <h1 class="section-title">Mari terhubung dengan MA Malnu Kananga</h1>
+    <p>
+      Tim layanan kami siap membantu pertanyaan seputar PPDB, e-learning, hingga kolaborasi program. Gunakan kanal
+      berikut atau kunjungi madrasah secara langsung.
+    </p>
+  </section>
+
+  <section class="split-grid">
+    <article class="card kontak-card">
+      <h2>Informasi Utama</h2>
+      <ul class="contact-list">
+        <li><strong>Alamat:</strong> Jalan Pendidikan No. 1 Kananga, Pandeglang, Banten 42251</li>
+        <li><strong>Telepon:</strong> (0253) 123456</li>
+        <li><strong>Email:</strong> info@ma-malnukananga.sch.id</li>
+        <li><strong>WhatsApp:</strong> 0812-3456-7890</li>
+      </ul>
+      <div class="details-group">
+        <details>
+          <summary>Jam operasional</summary>
+          <p>Senin - Jumat 07.00 - 15.30 WIB, Sabtu 08.00 - 12.00 WIB, Ahad tutup.</p>
+        </details>
+        <details>
+          <summary>Kontak PPDB</summary>
+          <p>Panitia PPDB: ppdb@ma-malnukananga.sch.id / 0813-2222-1111 (chat).</p>
+        </details>
+      </div>
+    </article>
+    <article class="card kontak-card">
+      <h2>Lokasi Madrasah</h2>
+      <iframe
+        title="Peta lokasi MA Malnu Kananga"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.0000000000005!2d106.0!3d-6.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zNsKwMTgnMDAuMCJTIDEwNsKwMDAnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="map"
+      ></iframe>
+    </article>
   </section>
 </BaseLayout>
 <style>
+  .kontak-hero {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .kontak-card {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
   .map {
     width: 100%;
     border: 0;
-    min-height: 300px;
+    min-height: 320px;
     border-radius: 1.5rem;
     box-shadow: var(--shadow-soft);
   }

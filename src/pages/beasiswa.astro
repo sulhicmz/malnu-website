@@ -3,5 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsList from '../components/NewsList.astro';
 ---
 <BaseLayout title="Informasi Beasiswa" description="Informasi beasiswa terbaru untuk siswa dan alumni MA Malnu Kananga.">
+  <section class="card beasiswa-hero">
+    <span class="section-kicker">Dukungan pendidikan</span>
+    <h1 class="section-title">Beasiswa untuk siswa dan alumni</h1>
+    <p>
+      Dapatkan pembaruan beasiswa dari pemerintah, lembaga swasta, maupun program internal madrasah. Informasi selalu
+      diperbarui agar peluang tidak terlewat.
+    </p>
+  </section>
   <NewsList title="Informasi Beasiswa" endpoint="/api/scholarships" emptyText="Belum ada info beasiswa." />
 </BaseLayout>
+<style>
+  .beasiswa-hero {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

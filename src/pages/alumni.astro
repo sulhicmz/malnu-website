@@ -2,19 +2,30 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import TurnstileWidget from '../components/TurnstileWidget.astro';
 ---
-<BaseLayout title="Alumni | MA Malnu Kananga" description="Katalog alumni MA Malnu Kananga dan formulir kontribusi data alumni baru.">
-  <section class="card">
-    <h1 class="section-title">Katalog Alumni</h1>
+<BaseLayout
+  title="Alumni | MA Malnu Kananga"
+  description="Katalog alumni MA Malnu Kananga dan formulir kontribusi data alumni baru."
+>
+  <section class="card alumni-hero">
+    <span class="section-kicker">Jejaring alumni</span>
+    <h1 class="section-title">Terhubung lintas generasi</h1>
     <p>
-      Data alumni ini bersumber dari basis data madrasah. Alumni dapat mengirim pembaruan profil melalui formulir di bawah.
+      Jejaring alumni MA Malnu Kananga menjadi ruang berbagi informasi kampus, karier, dan peluang kolaborasi. Data
+      berikut diperbarui secara berkala oleh tim kesiswaan.
     </p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Katalog Alumni</h2>
+    <p>Data alumni ini bersumber dari basis data madrasah. Alumni dapat mengirim pembaruan profil melalui formulir.</p>
     <div class="alumni-list" aria-live="polite">
       <p>Memuat data alumni...</p>
     </div>
   </section>
 
-  <section class="card">
+  <section class="card alumni-form-card">
     <h2 class="section-title">Tambahkan Data Alumni</h2>
+    <p>Isi formulir di bawah ini untuk memperbarui data. Tim kami akan melakukan verifikasi sebelum dipublikasikan.</p>
     <form class="alumni-form" aria-describedby="alumni-status">
       <div class="form-grid">
         <label>
@@ -36,7 +47,7 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
       </div>
       <TurnstileWidget action="alumni" />
       <button type="submit">Kirim Data</button>
-      <p id="alumni-status" role="status"></p>
+      <p id="alumni-status" role="status" class="alumni-status"></p>
     </form>
   </section>
 </BaseLayout>
@@ -118,11 +129,7 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
   });
 </script>
 <style>
-  .alumni-list {
-    margin-top: 1.5rem;
-  }
-
-  .alumni-form {
+  .alumni-hero {
     display: grid;
     gap: 1rem;
   }
@@ -132,16 +139,15 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
     gap: 1rem;
   }
 
-  @media (min-width: 768px) {
+  .alumni-status {
+    min-height: 1.25rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+  }
+
+  @media (min-width: 720px) {
     .form-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
-
-  input {
-    padding: 0.75rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(46, 125, 50, 0.25);
-    background: rgba(255, 255, 255, 0.9);
   }
 </style>

@@ -1,12 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Arsip Digital | MA Malnu Kananga" description="Akses arsip digital siswa MA Malnu Kananga berupa rapor dan dokumen prestasi.">
-  <section class="card">
+<BaseLayout
+  title="Arsip Digital | MA Malnu Kananga"
+  description="Akses arsip digital siswa MA Malnu Kananga berupa rapor dan dokumen prestasi."
+>
+  <section class="card arsip-hero">
+    <span class="section-kicker">Dokumen akademik</span>
     <h1 class="section-title">Arsip Digital Siswa</h1>
     <p>
       Dokumen disimpan dalam repositori aman dan hanya dapat diakses melalui tautan yang diberikan kepada wali murid.
+      Setiap berkas memiliki masa berlaku dan tanda tangan digital.
     </p>
+  </section>
+
+  <section class="card">
+    <h2 class="section-title">Daftar Arsip</h2>
     <div class="arsip-list" aria-live="polite">
       <p>Memuat arsip...</p>
     </div>
@@ -62,3 +71,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
   loadArsip();
 </script>
+<style>
+  .arsip-hero {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

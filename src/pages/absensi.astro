@@ -1,27 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Absensi QR | MA Malnu Kananga" description="Panduan penggunaan absensi QR MA Malnu Kananga dengan token satu kali pakai dan verifikasi Turnstile.">
-  <section class="card">
-    <h1 class="section-title">Absensi Digital dengan QR</h1>
+<BaseLayout
+  title="Absensi QR | MA Malnu Kananga"
+  description="Panduan penggunaan absensi QR MA Malnu Kananga dengan token satu kali pakai dan verifikasi Turnstile."
+>
+  <section class="card absensi-hero">
+    <span class="section-kicker">Kehadiran digital</span>
+    <h1 class="section-title">Absensi QR dengan token aman</h1>
     <p>
-      Setiap kegiatan mendapatkan QR unik berisi token terenkripsi. Peserta cukup memindai QR menggunakan smartphone dan
-      mengirimkan token tersebut melalui halaman verifikasi. Sistem akan memvalidasi keaslian token, waktu scan, dan
-      melakukan pencatatan otomatis ke basis data.
+      Sistem absensi kami memanfaatkan QR unik yang berisi token terenkripsi. Proses validasi dilakukan secara langsung
+      untuk memastikan tidak ada duplikasi kehadiran.
     </p>
+  </section>
+
+  <section class="card absensi-content">
+    <div class="section-header">
+      <h2>Langkah penggunaan</h2>
+      <p>Ikuti alur berikut agar pencatatan kehadiran berjalan lancar dan akurat.</p>
+    </div>
     <ol class="steps">
-      <li>Panitia membuat QR melalui portal admin (lihat panduan di README).</li>
+      <li>Panitia membuat QR melalui portal admin dan menentukan masa berlaku token.</li>
       <li>Siswa memindai QR dan diarahkan ke <strong>ma-malnukananga.sch.id/absen</strong>.</li>
-      <li>Halaman verifikasi akan mengisi token otomatis, memvalidasi Turnstile, dan mengirim data ke sistem.</li>
-      <li>Peserta menerima status hadir pada layar beserta waktu scan.</li>
+      <li>Halaman verifikasi otomatis mengisi token, menjalankan Turnstile, dan mengirim data.</li>
+      <li>Peserta menerima status hadir beserta waktu pemindaian.</li>
     </ol>
-    <a class="button" href="/absen" rel="noopener">Buka Halaman Verifikasi</a>
+    <div class="cta-group">
+      <a class="button" href="/absen" rel="noopener">Buka Halaman Verifikasi</a>
+      <a class="text-link" href="/admin/qrcode">Buat QR untuk panitia</a>
+    </div>
   </section>
 </BaseLayout>
 <style>
+  .absensi-hero,
+  .absensi-content {
+    display: grid;
+    gap: 1rem;
+  }
+
   .steps {
     display: grid;
     gap: 0.75rem;
     padding-left: 1.25rem;
+    color: var(--color-muted-soft);
   }
 </style>

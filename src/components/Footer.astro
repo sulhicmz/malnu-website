@@ -1,28 +1,54 @@
 <footer class="site-footer" role="contentinfo">
-  <div class="container">
-    <div class="footer-grid">
+  <div class="footer-surface">
+    <section class="footer-cta card">
       <div>
-        <h2>Madrasah Aliyah Malnu Kananga</h2>
+        <span class="section-kicker">Selalu bertumbuh</span>
+        <h2>Madrasah unggul yang ramah teknologi.</h2>
         <p>
-          Jalan Pendidikan No. 1 Kananga, Kabupaten Pandeglang, Banten 42251. Telepon: (0253) 123456.
-        </p>
-        <p>
-          <strong>Email:</strong> info@ma-malnukananga.sch.id
+          Bergabunglah bersama kami untuk menumbuhkan karakter islami, kecakapan akademik, dan literasi digital yang
+          siap bersaing secara global.
         </p>
       </div>
+      <div class="cta-group">
+        <a class="button" href="/ppdb">Daftar PPDB</a>
+        <a class="button secondary" href="/kontak">Hubungi Madrasah</a>
+      </div>
+    </section>
+    <div class="footer-grid">
       <div>
-        <h3>Menu</h3>
-        <ul>
-          <li><a href="/profil">Profil</a></li>
-          <li><a href="/ppdb">PPDB</a></li>
+        <h3>Madrasah Aliyah Malnu Kananga</h3>
+        <p>
+          Jalan Pendidikan No. 1 Kananga, Kabupaten Pandeglang, Banten 42251<br />
+          Telepon: (0253) 123456
+        </p>
+        <p><strong>Email:</strong> info@ma-malnukananga.sch.id</p>
+        <div class="chip-group">
+          <span class="chip">Akreditasi A</span>
+          <span class="chip">Terakreditasi Kemenag</span>
+        </div>
+      </div>
+      <div>
+        <h4>Layanan Populer</h4>
+        <ul class="footer-links">
+          <li><a href="/profil">Profil Madrasah</a></li>
+          <li><a href="/ppdb">Panduan PPDB</a></li>
           <li><a href="/e-learning">E-Learning</a></li>
-          <li><a href="/alumni">Alumni</a></li>
+          <li><a href="/alumni">Data Alumni</a></li>
           <li><a href="/arsip">Arsip Digital</a></li>
         </ul>
       </div>
       <div>
-        <h3>Tautan Resmi</h3>
-        <ul>
+        <h4>Jam Layanan</h4>
+        <ul class="footer-links">
+          <li>Senin - Kamis: 07.00 - 15.30</li>
+          <li>Jumat: 07.00 - 11.30</li>
+          <li>Sabtu: 08.00 - 12.00</li>
+          <li>Ahad: Tutup</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Tautan Resmi</h4>
+        <ul class="footer-links">
           <li><a href="https://emis.kemenag.go.id" target="_blank" rel="noopener">EMIS</a></li>
           <li><a href="https://vervalpd.data.kemdikbud.go.id" target="_blank" rel="noopener">VERVAL PD</a></li>
           <li><a href="https://simpatika.kemenag.go.id" target="_blank" rel="noopener">SIMPATIKA</a></li>
@@ -31,15 +57,38 @@
         </ul>
       </div>
     </div>
-    <p class="footnote">© {new Date().getFullYear()} Madrasah Aliyah Malnu Kananga. All rights reserved.</p>
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} Madrasah Aliyah Malnu Kananga. Seluruh hak cipta dilindungi.</p>
+      <p class="footer-note">Teroptimasi untuk akses cepat, SEO sekolah, dan perangkat mobile.</p>
+    </div>
   </div>
 </footer>
 <style>
   .site-footer {
-    margin-top: 4rem;
-    background: rgba(18, 41, 21, 0.9);
+    margin-top: clamp(4rem, 6vw, 5.5rem);
+    background: linear-gradient(180deg, rgba(12, 34, 16, 0.92), rgba(12, 30, 18, 0.98));
     color: #f3ffe5;
-    padding: 2.5rem 1rem;
+    padding: clamp(3rem, 6vw, 4rem) 1.25rem clamp(2rem, 5vw, 3rem);
+  }
+
+  .footer-surface {
+    width: min(1100px, 94vw);
+    margin: 0 auto;
+    display: grid;
+    gap: clamp(2rem, 5vw, 3rem);
+  }
+
+  .footer-cta {
+    display: grid;
+    gap: 1.25rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+  }
+
+  .footer-cta h2 {
+    color: #ffffff;
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
   }
 
   .footer-grid {
@@ -47,38 +96,51 @@
     gap: 2rem;
   }
 
-  h2,
-  h3 {
-    margin-top: 0;
-    color: inherit;
-  }
-
-  ul {
+  .footer-links {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
-  a {
-    color: #a6f5f5;
+  .footer-links a {
+    color: #b4f4f1;
   }
 
-  a:hover,
-  a:focus {
+  .footer-links a:hover,
+  .footer-links a:focus {
     color: #ffffff;
   }
 
-  .footnote {
-    margin-top: 2rem;
-    font-size: 0.85rem;
+  .footer-bottom {
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: rgba(243, 255, 229, 0.8);
+  }
+
+  .footer-note {
     opacity: 0.8;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 720px) {
+    .footer-cta {
+      grid-template-columns: 3fr 2fr;
+    }
+
     .footer-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-bottom {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: center;
+    }
+
+    .footer-bottom p:last-child {
+      justify-self: end;
+      text-align: right;
     }
   }
 </style>
