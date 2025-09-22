@@ -1,9 +1,21 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import TurnstileWidget from '../../components/TurnstileWidget.astro';
 const presetToken = Astro.url.searchParams.get('token') ?? '';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Absensi', href: '/absensi' },
+  { label: 'Verifikasi', href: '/absen' }
+];
 ---
-<BaseLayout title="Verifikasi Absensi" description="Halaman verifikasi absensi QR MA Malnu Kananga dengan token sekali pakai.">
+<Base
+  title="Verifikasi Absensi | MA MALNU Kananga"
+  description="Halaman verifikasi absensi QR MA MALNU Kananga untuk memasukkan NISN dan token sekali pakai dengan validasi Turnstile sebelum pencatatan kehadiran santri."
+  breadcrumbs={breadcrumbs}
+  noindex={true}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Verifikasi Kehadiran</h1>
     <p>
@@ -21,10 +33,10 @@ const presetToken = Astro.url.searchParams.get('token') ?? '';
       </label>
       <TurnstileWidget action="absensi" />
       <button type="submit">Catat Kehadiran</button>
-      <p id="absen-status" role="status"></p>
+      <p id="absen-status" role="status" aria-live="polite"></p>
     </form>
   </section>
-</BaseLayout>
+</Base>
 <script>
   const form = document.querySelector('.absen-form');
   const status = document.querySelector('#absen-status');

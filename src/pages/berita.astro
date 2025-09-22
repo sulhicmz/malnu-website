@@ -1,7 +1,76 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import NewsList from '../components/NewsList.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Berita', href: '/berita' }
+];
+const relatedLinks = [
+  { href: '/arsip', label: 'Arsip Digital Madrasah' },
+  { href: '/beasiswa', label: 'Informasi Beasiswa' },
+  { href: '/ppdb', label: 'PPDB Online' },
+  { href: '/profil', label: 'Profil Madrasah' }
+];
 ---
-<BaseLayout title="Berita Pendidikan" description="Kumpulan berita pendidikan terkini untuk warga MA Malnu Kananga.">
+<Base
+  title="Berita Pendidikan | MA MALNU Kananga"
+  description="Berita pendidikan MA MALNU Kananga menyoroti kegiatan madrasah, prestasi santri, dan agenda literasi digital yang relevan bagi siswa, guru, serta orang tua."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
+  <section class="card berita-intro">
+    <h1 class="section-title">Portal Berita Pendidikan</h1>
+    <p>
+      Ikuti kabar terbaru seputar kegiatan madrasah, prestasi siswa, dan kebijakan pendidikan yang berdampak pada komunitas MA
+      MALNU Kananga.
+    </p>
+  </section>
   <NewsList title="Berita Pendidikan" endpoint="/api/news" emptyText="Belum ada berita." />
-</BaseLayout>
+  <section class="card related-links" aria-labelledby="related-news">
+    <h2 id="related-news" class="section-title">Baca juga</h2>
+    <ul>
+      {relatedLinks.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+<style>
+  .berita-intro p {
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .related-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .related-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    background: rgba(0, 166, 166, 0.12);
+    color: #0f2910;
+  }
+
+  .related-links a::before {
+    content: '↗';
+    font-size: 0.9rem;
+    color: #00a6a6;
+  }
+
+  .related-links a:hover,
+  .related-links a:focus-visible {
+    background: rgba(0, 166, 166, 0.22);
+    color: #12461c;
+  }
+</style>

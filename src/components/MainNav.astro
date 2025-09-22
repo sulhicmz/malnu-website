@@ -1,0 +1,302 @@
+---
+const navLinks = [
+  { href: '/', label: 'Beranda' },
+  { href: '/profil', label: 'Profil' },
+  { href: '/ppdb', label: 'PPDB' },
+  { href: '/e-learning', label: 'E-Learning' },
+  { href: '/alumni', label: 'Alumni' },
+  { href: '/arsip', label: 'Arsip' },
+  { href: '/berita', label: 'Berita' },
+  { href: '/beasiswa', label: 'Beasiswa' },
+  { href: '/kontak', label: 'Kontak' }
+];
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => {
+  if (href === '/') {
+    return currentPath === '/';
+  }
+  return currentPath.startsWith(href);
+};
+---
+<header class="main-header" role="banner">
+  <div class="nav-shell">
+    <a class="brand" href="/" aria-label="Beranda MA Malnu Kananga">
+      <span class="brand-mark" aria-hidden="true">MA</span>
+      <span class="brand-text">
+        <strong>MA MALNU Kananga</strong>
+        <span>Madrasah Aliyah Modern</span>
+      </span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-navigation">
+      <span class="sr-only">Buka menu navigasi</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+    <nav id="main-navigation" class="nav" aria-label="Navigasi utama">
+      <ul>
+        {navLinks.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              data-active={isActive(item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div class="scrim" hidden></div>
+</header>
+<script type="module">
+  const header = document.currentScript?.closest('.main-header');
+  const toggle = header?.querySelector('.menu-toggle');
+  const nav = header?.querySelector('#main-navigation');
+  const scrim = header?.querySelector('.scrim');
+  const closeMenu = (returnFocus = true) => {
+    if (!toggle || !nav) return;
+    toggle.setAttribute('aria-expanded', 'false');
+    nav.setAttribute('data-open', 'false');
+    scrim?.setAttribute('hidden', '');
+    if (returnFocus && typeof toggle.focus === 'function') {
+      toggle.focus({ preventScroll: true });
+    }
+    document.body.classList.remove('nav-open');
+  };
+  toggle?.addEventListener('click', () => {
+    if (!toggle || !nav) return;
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    const next = !expanded;
+    toggle.setAttribute('aria-expanded', String(next));
+    nav.setAttribute('data-open', String(next));
+    if (next) {
+      scrim?.removeAttribute('hidden');
+      document.body.classList.add('nav-open');
+      const firstLink = nav.querySelector('a');
+      if (firstLink && typeof firstLink.focus === 'function') {
+        firstLink.focus({ preventScroll: true });
+      }
+    } else {
+      scrim?.setAttribute('hidden', '');
+      document.body.classList.remove('nav-open');
+    }
+  });
+  if (nav) {
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 767px)').matches) {
+          closeMenu(false);
+        }
+      });
+    });
+  }
+  scrim?.addEventListener('click', () => closeMenu());
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      closeMenu();
+    }
+  });
+</script>
+<style>
+  .main-header {
+    position: sticky;
+    top: 0.75rem;
+    z-index: 100;
+    padding: 0 clamp(1rem, 4vw, 2.5rem);
+  }
+
+  .nav-shell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-radius: 1.5rem;
+    background: rgba(243, 255, 229, 0.95);
+    background: color-mix(in srgb, #f3ffe5 82%, white);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 16px 40px rgba(15, 41, 16, 0.12);
+    padding: 0.6rem 1rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 48px;
+    color: #0f2910;
+  }
+
+  .brand:focus-visible {
+    outline: 3px solid rgba(0, 166, 166, 0.45);
+    outline-offset: 6px;
+    border-radius: 1rem;
+  }
+
+  .brand-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2e7d32, #205823);
+    color: #f3ffe5;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+
+  .brand-text span {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(15, 41, 16, 0.7);
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 48px;
+    border: none;
+    border-radius: 1rem;
+    background: rgba(0, 166, 166, 0.12);
+    color: #0f2910;
+    cursor: pointer;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+
+  .menu-toggle:hover,
+  .menu-toggle:focus-visible {
+    background: rgba(0, 166, 166, 0.22);
+    transform: translateY(-1px);
+  }
+
+  .menu-toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .nav {
+    position: fixed;
+    inset: 0;
+    padding: clamp(1.5rem, 6vw, 3rem);
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(15, 41, 16, 0.25);
+    backdrop-filter: blur(8px);
+    transform: translateX(100%);
+    transition: transform 220ms ease;
+  }
+
+  .nav ul {
+    background: rgba(243, 255, 229, 0.94);
+    background: color-mix(in srgb, #f3ffe5 92%, white 10%);
+    border-radius: 1.5rem;
+    padding: clamp(1.5rem, 5vw, 2.5rem);
+    display: grid;
+    gap: 0.25rem;
+    width: min(320px, 90vw);
+    margin: auto 0 auto auto;
+  }
+
+  .nav a {
+    display: block;
+    padding: 0.85rem 1.1rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    color: #0f2910;
+    letter-spacing: 0.01em;
+    transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .nav a:hover,
+  .nav a:focus-visible,
+  .nav a[data-active='true'] {
+    background: rgba(46, 125, 50, 0.14);
+    color: #12461c;
+    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.45);
+  }
+
+  .nav[data-open='true'] {
+    transform: translateX(0);
+  }
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 41, 16, 0.45);
+    backdrop-filter: blur(3px);
+    z-index: -1;
+  }
+
+  @media (max-width: 767px) {
+    body.nav-open {
+      overflow: hidden;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .main-header {
+      top: 1rem;
+    }
+
+    .nav-shell {
+      padding: 0.4rem 0.8rem;
+    }
+
+    .menu-toggle {
+      display: none;
+    }
+
+    .nav {
+      position: static;
+      inset: auto;
+      transform: none !important;
+      padding: 0;
+      background: transparent;
+      backdrop-filter: none;
+      width: auto;
+      display: block;
+    }
+
+    .nav ul {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: transparent;
+      padding: 0.25rem;
+      width: auto;
+    }
+
+    .nav a {
+      border-radius: 999px;
+      padding-inline: 1rem;
+    }
+
+    .scrim {
+      display: none;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

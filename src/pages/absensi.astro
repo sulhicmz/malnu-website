@@ -1,7 +1,17 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Absensi', href: '/absensi' }
+];
 ---
-<BaseLayout title="Absensi QR | MA Malnu Kananga" description="Panduan penggunaan absensi QR MA Malnu Kananga dengan token satu kali pakai dan verifikasi Turnstile.">
+<Base
+  title="Absensi QR | MA MALNU Kananga"
+  description="Panduan absensi QR MA MALNU Kananga menjelaskan token sekali pakai, verifikasi Turnstile, alur scan peserta, dan tautan ke halaman verifikasi daring madrasah."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Absensi Digital dengan QR</h1>
     <p>
@@ -17,7 +27,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </ol>
     <a class="button" href="/absen" rel="noopener">Buka Halaman Verifikasi</a>
   </section>
-</BaseLayout>
+</Base>
 <style>
   .steps {
     display: grid;

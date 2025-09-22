@@ -1,7 +1,17 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Arsip', href: '/arsip' }
+];
 ---
-<BaseLayout title="Arsip Digital | MA Malnu Kananga" description="Akses arsip digital siswa MA Malnu Kananga berupa rapor dan dokumen prestasi.">
+<Base
+  title="Arsip Digital | MA MALNU Kananga"
+  description="Arsip digital MA MALNU Kananga menyediakan rapor dan dokumen prestasi siswa dengan akses khusus wali melalui tautan terproteksi serta riwayat unggah terkini."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Arsip Digital Siswa</h1>
     <p>
@@ -11,7 +21,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p>Memuat arsip...</p>
     </div>
   </section>
-</BaseLayout>
+</Base>
 <script>
   const container = document.querySelector('.arsip-list');
   async function loadArsip() {

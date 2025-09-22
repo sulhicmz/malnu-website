@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "lhci:mobile": "lhci autorun --config=lighthouserc.mobile.cjs",
+    "lhci:desktop": "lhci autorun --config=lighthouserc.desktop.cjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^9.2.1",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250922.0",
+    "@lhci/cli": "^0.15.1",
     "@types/node": "^24.5.2",
     "typescript": "^5.9.2"
   }

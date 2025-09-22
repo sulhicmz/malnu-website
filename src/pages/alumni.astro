@@ -1,8 +1,18 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TurnstileWidget from '../components/TurnstileWidget.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Alumni', href: '/alumni' }
+];
 ---
-<BaseLayout title="Alumni | MA Malnu Kananga" description="Katalog alumni MA Malnu Kananga dan formulir kontribusi data alumni baru.">
+<Base
+  title="Alumni | MA MALNU Kananga"
+  description="Katalog alumni MA MALNU Kananga menyajikan data lulusan dan formulir kontribusi Turnstile untuk memperbarui profil karier serta kontak jejaring madrasah."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Katalog Alumni</h1>
     <p>
@@ -36,10 +46,10 @@ import TurnstileWidget from '../components/TurnstileWidget.astro';
       </div>
       <TurnstileWidget action="alumni" />
       <button type="submit">Kirim Data</button>
-      <p id="alumni-status" role="status"></p>
+      <p id="alumni-status" role="status" aria-live="polite"></p>
     </form>
   </section>
-</BaseLayout>
+</Base>
 <script>
   const listEl = document.querySelector('.alumni-list');
   const status = document.querySelector('#alumni-status');

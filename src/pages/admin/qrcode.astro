@@ -1,6 +1,7 @@
 ---
 export const prerender = false;
-import BaseLayout from '../../layouts/BaseLayout.astro';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 const env = Astro.locals.runtime?.env as { ADMIN_BASIC_AUTH?: string } | undefined;
 const credential = env?.ADMIN_BASIC_AUTH;
 const authHeader = Astro.request.headers.get('authorization');
@@ -32,8 +33,18 @@ if (authHeader !== expected) {
     }
   });
 }
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Admin QR', href: '/admin/qrcode' }
+];
 ---
-<BaseLayout title="Generator QR Absensi" description="Buat token absensi sekali pakai untuk kegiatan MA Malnu Kananga.">
+<Base
+  title="Generator QR Absensi | MA MALNU Kananga"
+  description="Dashboard generator QR absensi MA MALNU Kananga untuk membuat token sekali pakai yang dilindungi autentikasi dasar sebelum distribusi ke panitia kegiatan."
+  breadcrumbs={breadcrumbs}
+  noindex={true}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Generator QR Absensi</h1>
     <form class="qr-form" aria-describedby="qr-status">
@@ -50,7 +61,7 @@ if (authHeader !== expected) {
     </form>
     <div class="qr-output" aria-live="polite"></div>
   </section>
-</BaseLayout>
+</Base>
 <script>
   const form = document.querySelector('.qr-form');
   const status = document.querySelector('#qr-status');

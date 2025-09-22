@@ -1,34 +1,61 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import ExternalServices from '../components/ExternalServices.astro';
 import NewsList from '../components/NewsList.astro';
-const pageTitle = 'Madrasah Aliyah Malnu Kananga';
-const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, informasi alumni, berita pendidikan, dan layanan beasiswa.';
+import {
+  heroImageAvif,
+  heroImageWebp,
+  heroImageWidth,
+  heroImageHeight
+} from '../data/heroImageBase64';
+const pageTitle = 'Beranda | MA MALNU Kananga';
+const description =
+  'Portal resmi MA MALNU Kananga dengan layanan PPDB online, e-learning, arsip digital, jejaring alumni, berita pendidikan, dan bantuan beasiswa terbaru.';
 ---
-<BaseLayout title={`${pageTitle} | Beranda`} description={description}>
-  <section class="hero card">
-    <div>
-      <p class="eyebrow">Madrasah Aliyah Malnu Kananga</p>
-      <h1>
-        Mencetak generasi islami, unggul akademik dan berdaya saing global.
-      </h1>
-      <p>
-        Selamat datang di portal digital MA Malnu Kananga. Temukan layanan terpadu untuk peserta didik, guru, orang tua,
-        dan alumni dalam satu genggaman.
-      </p>
-      <div class="cta-group">
-        <a class="button" href="/ppdb">Daftar PPDB</a>
-        <a class="button secondary" href="/e-learning">Masuk E-Learning</a>
+<Base title={pageTitle} description={description}>
+  <section class="hero card" aria-labelledby="hero-title">
+    <div class="hero-body">
+      <div class="hero-text">
+        <p class="eyebrow">Madrasah Aliyah Malnu Kananga</p>
+        <h1 id="hero-title">
+          Mencetak generasi islami, unggul akademik dan berdaya saing global.
+        </h1>
+        <p>
+          Selamat datang di portal digital MA MALNU Kananga. Temukan layanan terpadu untuk peserta didik, guru, orang tua,
+          dan alumni dalam satu genggaman.
+        </p>
+        <div class="cta-group">
+          <a class="button" href="/ppdb">Daftar PPDB</a>
+          <a class="button secondary" href="/e-learning">Masuk E-Learning</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Agenda kegiatan madrasah">
+        <h2>Agenda Terkini</h2>
+        <ul>
+          <li><strong>25 Nov:</strong> Webinar Digitalisasi Madrasah</li>
+          <li><strong>1 Des:</strong> Batas akhir pengisian rapor RDM</li>
+          <li><strong>5 Des:</strong> Kegiatan Maulid Nabi bersama santri</li>
+        </ul>
       </div>
     </div>
-    <div class="hero-card">
-      <h2>Agenda Terkini</h2>
-      <ul>
-        <li><strong>25 Nov:</strong> Webinar Digitalisasi Madrasah</li>
-        <li><strong>1 Des:</strong> Batas akhir pengisian rapor RDM</li>
-        <li><strong>5 Des:</strong> Kegiatan Maulid Nabi bersama santri</li>
-      </ul>
-    </div>
+    <figure class="hero-visual">
+      <picture>
+        <source type="image/avif" srcset={`data:image/avif;base64,${heroImageAvif}`} />
+        <source type="image/webp" srcset={`data:image/webp;base64,${heroImageWebp}`} />
+        <img
+          src={`data:image/webp;base64,${heroImageWebp}`}
+          width={heroImageWidth}
+          height={heroImageHeight}
+          alt="Ilustrasi siswa belajar daring dengan perangkat digital"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </picture>
+    </figure>
   </section>
+
+  <ExternalServices description="Pintasan menuju portal resmi Kementerian Agama dan Kemendikbud untuk layanan akademik." />
 
   <section class="grid highlights">
     <article class="card">
@@ -75,13 +102,23 @@ const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, inf
 
   <NewsList title="Berita Pendidikan" endpoint="/api/news" emptyText="Belum ada berita dari cache." />
   <NewsList title="Informasi Beasiswa" endpoint="/api/scholarships" emptyText="Belum ada data beasiswa." />
-</BaseLayout>
+</Base>
 <style>
   .hero {
     display: grid;
-    gap: 1.5rem;
+    gap: 1.75rem;
     padding: clamp(1.5rem, 3vw, 3rem);
-    background: radial-gradient(circle at top right, rgba(0, 166, 166, 0.25), transparent 55%), rgba(255, 255, 255, 0.8);
+    background: radial-gradient(circle at top right, rgba(0, 166, 166, 0.25), transparent 58%), rgba(255, 255, 255, 0.9);
+  }
+
+  .hero-body {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .hero-text {
+    display: grid;
+    gap: 1rem;
   }
 
   .eyebrow {
@@ -112,6 +149,33 @@ const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, inf
     background: rgba(46, 125, 50, 0.08);
     padding: 1.25rem;
     box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.15);
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .hero-card ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .hero-visual {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1.75rem;
+    overflow: hidden;
+    box-shadow: var(--shadow-glow);
+    background: rgba(46, 125, 50, 0.12);
+  }
+
+  .hero-visual picture,
+  .hero-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 
   .highlights {
@@ -128,8 +192,16 @@ const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, inf
 
   @media (min-width: 768px) {
     .hero {
-      grid-template-columns: 3fr 2fr;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
       align-items: center;
+    }
+
+    .hero-body {
+      gap: 2rem;
+    }
+
+    .hero-card {
+      align-self: flex-start;
     }
 
     .highlights {

@@ -1,0 +1,118 @@
+---
+import '../styles/global.css';
+import MainNav from '../components/MainNav.astro';
+import Footer from '../components/Footer.astro';
+import type { SeoOptions } from '../utils/seo';
+import { buildSeo, schoolSchema, EXTERNAL_SERVICE_DOMAINS, SITE } from '../utils/seo';
+type BaseProps = SeoOptions & {
+  headSlot?: Astro.Props['headSlot'];
+  pageClass?: string;
+  structuredData?: Record<string, unknown>[];
+};
+const {
+  title = 'MA MALNU Kananga',
+  description = 'Portal resmi Madrasah Aliyah Malnu Kananga: PPDB, e-learning, arsip digital, dan layanan madrasah.',
+  path = Astro.url.pathname,
+  breadcrumbs,
+  image,
+  noindex,
+  structuredData = [],
+  headSlot,
+  pageClass
+} = Astro.props as BaseProps;
+const seo = buildSeo({ title, description, path, breadcrumbs, image, noindex });
+const canonicalUrl = seo.canonical;
+const breadcrumbJson = seo.breadcrumbsJson ? JSON.stringify(seo.breadcrumbsJson) : null;
+const additionalStructured = structuredData.length ? structuredData.map((schema) => JSON.stringify(schema)) : [];
+const robotsContent = seo.noindex ? 'noindex, nofollow' : 'index, follow';
+---
+<!DOCTYPE html>
+<html lang="id" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robotsContent} />
+    <meta name="theme-color" content="#2E7D32" />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
+    <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:site_name" content={SITE.shortName} />
+    <meta property="og:title" content={seo.meta.og.title} />
+    <meta property="og:description" content={seo.meta.og.description} />
+    <meta property="og:url" content={seo.meta.og.url} />
+    <meta property="og:image" content={seo.meta.og.image.src} />
+    <meta property="og:image:alt" content={seo.meta.og.image.alt} />
+    {seo.meta.og.image.width && <meta property="og:image:width" content={String(seo.meta.og.image.width)} />}
+    {seo.meta.og.image.height && <meta property="og:image:height" content={String(seo.meta.og.image.height)} />}
+    <meta name="twitter:card" content={seo.meta.twitter.card} />
+    <meta name="twitter:title" content={seo.meta.twitter.title} />
+    <meta name="twitter:description" content={seo.meta.twitter.description} />
+    <meta name="twitter:image" content={seo.meta.twitter.image.src} />
+    <meta name="twitter:image:alt" content={seo.meta.twitter.image.alt} />
+    <meta name="twitter:site" content="@mamalnukananga" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    {EXTERNAL_SERVICE_DOMAINS.map((domain) => (
+      <>
+        <link rel="dns-prefetch" href={domain} />
+        <link rel="preconnect" href={domain} crossorigin="anonymous" />
+      </>
+    ))}
+    <script type="application/ld+json">{JSON.stringify(schoolSchema)}</script>
+    {breadcrumbJson && <script type="application/ld+json">{breadcrumbJson}</script>}
+    {additionalStructured.map((schema) => (
+      <script type="application/ld+json">{schema}</script>
+    ))}
+    {headSlot}
+    <script type="module">
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker?.register('/service-worker.js').catch((err) => console.error('SW registration failed', err));
+        });
+      }
+    </script>
+  </head>
+  <body class={pageClass}>
+    <a class="skip-link" href="#utama">Lewati ke konten utama</a>
+    <MainNav />
+    <main id="utama" role="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+<style>
+  body {
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  }
+
+  .skip-link {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 200;
+    padding: 0.75rem 1.25rem;
+    border-radius: 1rem;
+    background: #ffffff;
+    color: #12461c;
+    transform: translateY(-150%);
+    transition: transform 180ms ease;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+    outline: 3px solid rgba(0, 166, 166, 0.5);
+    outline-offset: 2px;
+  }
+
+  main#utama {
+    padding-inline: clamp(1rem, 5vw, 2.5rem);
+    padding-block: clamp(1rem, 4vw, 3rem);
+  }
+</style>

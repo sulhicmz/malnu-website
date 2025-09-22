@@ -1,7 +1,75 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import NewsList from '../components/NewsList.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Beasiswa', href: '/beasiswa' }
+];
+const relatedLinks = [
+  { href: '/berita', label: 'Berita Pendidikan' },
+  { href: '/ppdb', label: 'PPDB Online' },
+  { href: '/alumni', label: 'Jejaring Alumni' }
+];
 ---
-<BaseLayout title="Informasi Beasiswa" description="Informasi beasiswa terbaru untuk siswa dan alumni MA Malnu Kananga.">
+<Base
+  title="Informasi Beasiswa | MA MALNU Kananga"
+  description="Informasi beasiswa MA MALNU Kananga memuat program pemerintah dan mitra dengan syarat pendaftaran, jadwal seleksi, serta kontak layanan bantuan dana siswa."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
+  <section class="card beasiswa-intro">
+    <h1 class="section-title">Informasi Beasiswa</h1>
+    <p>
+      Telusuri peluang bantuan dana pendidikan untuk siswa dan alumni MA MALNU Kananga. Tim kurasi kami memverifikasi sumber
+      resmi agar data selalu akurat.
+    </p>
+  </section>
   <NewsList title="Informasi Beasiswa" endpoint="/api/scholarships" emptyText="Belum ada info beasiswa." />
-</BaseLayout>
+  <section class="card related-links" aria-labelledby="related-scholarships">
+    <h2 id="related-scholarships" class="section-title">Baca juga</h2>
+    <ul>
+      {relatedLinks.map((item) => (
+        <li>
+          <a href={item.href}>{item.label}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+<style>
+  .beasiswa-intro p {
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  .related-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .related-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 1rem;
+    background: rgba(46, 125, 50, 0.12);
+    color: #0f2910;
+  }
+
+  .related-links a::before {
+    content: '↗';
+    font-size: 0.9rem;
+    color: #2e7d32;
+  }
+
+  .related-links a:hover,
+  .related-links a:focus-visible {
+    background: rgba(46, 125, 50, 0.18);
+    color: #12461c;
+  }
+</style>

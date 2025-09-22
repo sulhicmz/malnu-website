@@ -1,9 +1,19 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TurnstileWidget from '../components/TurnstileWidget.astro';
 const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'PPDB', href: '/ppdb' }
+];
 ---
-<BaseLayout title="PPDB Online | MA Malnu Kananga" description="Formulir pendaftaran peserta didik baru MA Malnu Kananga dengan verifikasi Cloudflare Turnstile.">
+<Base
+  title="PPDB Online | MA MALNU Kananga"
+  description="Formulir PPDB online MA MALNU Kananga dengan verifikasi Turnstile, panduan berkas, pilihan jurusan, dan notifikasi nomor pendaftaran bagi calon siswa baru."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">PPDB Online</h1>
     <p>
@@ -45,10 +55,10 @@ const mode = import.meta.env.PUBLIC_PPD_MODE ?? 'live';
       </div>
       <TurnstileWidget action="ppdb" />
       <button type="submit">Kirim Pendaftaran</button>
-      <p id="ppdb-status" role="status"></p>
+      <p id="ppdb-status" role="status" aria-live="polite"></p>
     </form>
   </section>
-</BaseLayout>
+</Base>
 <script>
   const form = document.querySelector('.ppdb-form');
   const status = document.querySelector('#ppdb-status');

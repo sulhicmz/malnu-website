@@ -1,10 +1,20 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { getCollection } from 'astro:content';
 const entries = await getCollection('profil');
 const ordered = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Profil', href: '/profil' }
+];
 ---
-<BaseLayout title="Profil | MA Malnu Kananga" description="Profil lengkap MA Malnu Kananga meliputi visi misi, sejarah, dan nilai pesantren.">
+<Base
+  title="Profil | MA MALNU Kananga"
+  description="Profil lengkap MA MALNU Kananga mencakup sejarah, visi misi, nilai pesantren, serta fasilitas madrasah unggulan di Kananga, Menes, Kabupaten Pandeglang."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Profil Madrasah</h1>
     {ordered.map((item) => (
@@ -14,7 +24,7 @@ const ordered = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 9
       </article>
     ))}
   </section>
-</BaseLayout>
+</Base>
 <style>
   .profil-block {
     margin-bottom: 2rem;

@@ -1,12 +1,22 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+const breadcrumbs = [
+  { label: 'Beranda', href: '/' },
+  { label: 'Kontak', href: '/kontak' }
+];
 ---
-<BaseLayout title="Kontak" description="Hubungi Madrasah Aliyah Malnu Kananga untuk informasi lebih lanjut.">
+<Base
+  title="Kontak | MA MALNU Kananga"
+  description="Kontak resmi MA MALNU Kananga mencakup alamat Jl. Pendidikan No. 1 Kananga, Menes 42262, telepon (0253) 234 567, dan email info@ma-malnukananga.sch.id."
+  breadcrumbs={breadcrumbs}
+>
+  <Breadcrumbs items={breadcrumbs} />
   <section class="card">
     <h1 class="section-title">Hubungi Kami</h1>
-    <p>Alamat: Jalan Pendidikan No. 1 Kananga, Pandeglang, Banten 42251.</p>
-    <p>Telepon: (0253) 123456</p>
-    <p>Email resmi: info@ma-malnukananga.sch.id</p>
+    <p>Alamat: Jl. Pendidikan No. 1 Kananga, Menes, Kabupaten Pandeglang, Banten 42262</p>
+    <p>Telepon: <a href="tel:+62253234567">(0253) 234 567</a></p>
+    <p>Email resmi: <a href="mailto:info@ma-malnukananga.sch.id">info@ma-malnukananga.sch.id</a></p>
     <iframe
       title="Peta lokasi MA Malnu Kananga"
       src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.0000000000005!2d106.0!3d-6.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0:0x0!2zNsKwMTgnMDAuMCJTIDEwNsKwMDAnMDAuMCJF!5e0!3m2!1sid!2sid!4v1700000000000"
@@ -15,7 +25,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       class="map"
     ></iframe>
   </section>
-</BaseLayout>
+</Base>
 <style>
   .map {
     width: 100%;

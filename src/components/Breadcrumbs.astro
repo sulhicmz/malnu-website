@@ -1,0 +1,67 @@
+---
+import type { BreadcrumbItem } from '../utils/seo';
+const { items } = Astro.props as { items: BreadcrumbItem[] };
+const lastIndex = items.length - 1;
+---
+{items.length > 0 && (
+  <nav class="breadcrumbs" aria-label="Jejak navigasi">
+    <ol>
+      {items.map((item, index) => (
+        <li>
+          {index === lastIndex ? (
+            <span aria-current="page">{item.label}</span>
+          ) : (
+            <a href={item.href}>{item.label}</a>
+          )}
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}
+<style>
+  .breadcrumbs {
+    width: min(1100px, 100%);
+    margin: 0 auto clamp(1rem, 3vw, 1.75rem);
+    font-size: 0.9rem;
+    color: rgba(15, 41, 16, 0.7);
+  }
+
+  .breadcrumbs ol {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+  }
+
+  .breadcrumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .breadcrumbs li::after {
+    content: '›';
+    opacity: 0.55;
+  }
+
+  .breadcrumbs li:last-child::after {
+    content: '';
+  }
+
+  .breadcrumbs a {
+    color: rgba(15, 41, 16, 0.7);
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus-visible {
+    color: #12461c;
+  }
+
+  .breadcrumbs [aria-current='page'] {
+    color: #12461c;
+    font-weight: 600;
+  }
+</style>

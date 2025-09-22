@@ -1,0 +1,44 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Lighthouse audit (mobile)
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: ./lighthouserc.mobile.cjs
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lighthouse audit (desktop)
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: ./lighthouserc.desktop.cjs
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
