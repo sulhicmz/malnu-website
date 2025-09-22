@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title desc">
+  <title id="title">Ikon Resolusi Tinggi MA Malnu Kananga</title>
+  <desc id="desc">Monogram MA pada latar gradient hijau dan teal untuk aplikasi web</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2E7D32" />
+      <stop offset="100%" stop-color="#00A6A6" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="100" height="100" rx="22" fill="#F3FFE5" />
+  <rect x="5" y="5" width="90" height="90" rx="21" fill="url(#bg)" />
+  <path d="M24 72V28h11l15 19 15-19h11v44h-11V45L50 65 35 45v27z" fill="#F3FFE5" />
+  <path d="M76 72H63l-5.6-13H42.6L37 72H24l22-44h11zM52 48l-5.2 11h10.4z" fill="#F3FFE5" opacity="0.85" />
+</svg>

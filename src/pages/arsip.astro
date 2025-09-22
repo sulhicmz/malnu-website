@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Arsip Digital | MA Malnu Kananga" description="Akses arsip digital siswa MA Malnu Kananga berupa rapor dan dokumen prestasi.">
+  <section class="card">
+    <h1 class="section-title">Arsip Digital Siswa</h1>
+    <p>
+      Dokumen disimpan dalam repositori aman dan hanya dapat diakses melalui tautan yang diberikan kepada wali murid.
+    </p>
+    <div class="arsip-list" aria-live="polite">
+      <p>Memuat arsip...</p>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  const container = document.querySelector('.arsip-list');
+  async function loadArsip() {
+    if (!container) return;
+    container.innerHTML = '<p>Memuat arsip...</p>';
+    try {
+      const res = await fetch('/api/arsip', { headers: { Accept: 'application/json' } });
+      const payload = await res.json();
+      if (!payload.success || !Array.isArray(payload.data) || payload.data.length === 0) {
+        container.innerHTML = '<p>Belum ada arsip tersedia.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <div class="table-wrapper">
+          <table>
+            <caption class="sr-only">Daftar arsip digital</caption>
+            <thead>
+              <tr>
+                <th scope="col">NISN</th>
+                <th scope="col">Nama Berkas</th>
+                <th scope="col">Tipe</th>
+                <th scope="col">Diunggah</th>
+                <th scope="col">Unduh</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${payload.data
+                .map(
+                  (item) => `
+                    <tr>
+                      <td>${item.siswa_id}</td>
+                      <td>${item.nama_file}</td>
+                      <td>${item.tipe_mime}</td>
+                      <td>${new Date(item.diunggah_pada).toLocaleDateString('id-ID')}</td>
+                      <td><a class="button" href="${item.url_rel}" target="_blank" rel="noopener">Buka</a></td>
+                    </tr>
+                  `
+                )
+                .join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch (error) {
+      console.error(error);
+      container.innerHTML = '<p>Gagal memuat arsip.</p>';
+    }
+  }
+  loadArsip();
+</script>

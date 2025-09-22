@@ -1,0 +1,84 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h2>Madrasah Aliyah Malnu Kananga</h2>
+        <p>
+          Jalan Pendidikan No. 1 Kananga, Kabupaten Pandeglang, Banten 42251. Telepon: (0253) 123456.
+        </p>
+        <p>
+          <strong>Email:</strong> info@ma-malnukananga.sch.id
+        </p>
+      </div>
+      <div>
+        <h3>Menu</h3>
+        <ul>
+          <li><a href="/profil">Profil</a></li>
+          <li><a href="/ppdb">PPDB</a></li>
+          <li><a href="/e-learning">E-Learning</a></li>
+          <li><a href="/alumni">Alumni</a></li>
+          <li><a href="/arsip">Arsip Digital</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Tautan Resmi</h3>
+        <ul>
+          <li><a href="https://emis.kemenag.go.id" target="_blank" rel="noopener">EMIS</a></li>
+          <li><a href="https://vervalpd.data.kemdikbud.go.id" target="_blank" rel="noopener">VERVAL PD</a></li>
+          <li><a href="https://simpatika.kemenag.go.id" target="_blank" rel="noopener">SIMPATIKA</a></li>
+          <li><a href="https://nisn.data.kemdikbud.go.id" target="_blank" rel="noopener">Cek NISN</a></li>
+          <li><a href="https://rdm.ma-malnukananga.sch.id" target="_blank" rel="noopener">RDM</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footnote">© {new Date().getFullYear()} Madrasah Aliyah Malnu Kananga. All rights reserved.</p>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    margin-top: 4rem;
+    background: rgba(18, 41, 21, 0.9);
+    color: #f3ffe5;
+    padding: 2.5rem 1rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  h2,
+  h3 {
+    margin-top: 0;
+    color: inherit;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  a {
+    color: #a6f5f5;
+  }
+
+  a:hover,
+  a:focus {
+    color: #ffffff;
+  }
+
+  .footnote {
+    margin-top: 2rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

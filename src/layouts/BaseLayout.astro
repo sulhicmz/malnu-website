@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+const { title = 'Madrasah Aliyah Malnu Kananga', description = 'Portal resmi Madrasah Aliyah Malnu Kananga dengan layanan PPDB, e-learning, berita, dan beasiswa.' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#2E7D32" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
+    <link rel="apple-touch-icon" type="image/svg+xml" href="/icons/icon-192.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://ma-malnukananga.sch.id" />
+    <meta property="og:image" content="https://ma-malnukananga.sch.id/icons/icon-512.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+    <script type="module">
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .catch((err) => console.error('SW registration failed', err));
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Lewati ke konten utama</a>
+    <Header />
+    <main id="content" role="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+<style>
+  .skip-link {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: #ffffff;
+    color: var(--color-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 0.75rem;
+    transform: translateY(-200%);
+    transition: transform 150ms ease;
+    z-index: 999;
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+    box-shadow: 0 0 0 3px rgba(0, 166, 166, 0.35);
+  }
+</style>

@@ -1,0 +1,96 @@
+---
+export const prerender = false;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const env = Astro.locals.runtime?.env as { ADMIN_BASIC_AUTH?: string } | undefined;
+const credential = env?.ADMIN_BASIC_AUTH;
+const authHeader = Astro.request.headers.get('authorization');
+if (!credential) {
+  throw new Error('ADMIN_BASIC_AUTH belum disetel di lingkungan.');
+}
+const base64 = (value: string) => {
+  if (typeof btoa === 'function') {
+    return btoa(value);
+  }
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+  let str = value;
+  let output = '';
+  for (let block = 0, charCode: number, i = 0, map = chars; str.charAt(i | 0) || ((map = '='), i % 1); output += map.charAt(63 & (block >> (8 - (i % 1) * 8)))) {
+    charCode = str.charCodeAt((i += 3 / 4));
+    if (charCode > 0xff) {
+      throw new Error('Karakter tidak valid untuk base64.');
+    }
+    block = (block << 8) | charCode;
+  }
+  return output;
+};
+const expected = `Basic ${base64(credential)}`;
+if (authHeader !== expected) {
+  return new Response('Unauthorized', {
+    status: 401,
+    headers: {
+      'WWW-Authenticate': 'Basic realm="QR Admin"'
+    }
+  });
+}
+---
+<BaseLayout title="Generator QR Absensi" description="Buat token absensi sekali pakai untuk kegiatan MA Malnu Kananga.">
+  <section class="card">
+    <h1 class="section-title">Generator QR Absensi</h1>
+    <form class="qr-form" aria-describedby="qr-status">
+      <label>
+        ID Acara/Kelas
+        <input type="text" name="acara_id" required placeholder="contoh: MPLS-2025-01" />
+      </label>
+      <label>
+        Masa Berlaku (menit)
+        <input type="number" name="valid" min="5" max="480" value="60" required />
+      </label>
+      <button type="submit">Buat QR</button>
+      <p id="qr-status" role="status"></p>
+    </form>
+    <div class="qr-output" aria-live="polite"></div>
+  </section>
+</BaseLayout>
+<script>
+  const form = document.querySelector('.qr-form');
+  const status = document.querySelector('#qr-status');
+  const output = document.querySelector('.qr-output');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(event.target instanceof HTMLFormElement) || !status || !output) return;
+    status.textContent = 'Menghasilkan QR...';
+    output.innerHTML = '';
+    const data = new FormData(event.target);
+    const params = new URLSearchParams(data as any).toString();
+    try {
+      const res = await fetch(`/api/absen/qrcode?${params}`);
+      if (!res.ok) {
+        status.textContent = 'Gagal membuat QR: ' + (await res.text());
+        return;
+      }
+      const svg = await res.text();
+      output.innerHTML = svg;
+      const download = document.createElement('a');
+      download.textContent = 'Unduh SVG';
+      download.className = 'button';
+      download.href = 'data:image/svg+xml;base64,' + btoa(svg);
+      download.download = `${data.get('acara_id')}-qr.svg`;
+      output.appendChild(download);
+      status.textContent = 'QR siap dicetak.';
+    } catch (error) {
+      status.textContent = 'Terjadi kesalahan jaringan.';
+    }
+  });
+</script>
+<style>
+  .qr-form {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .qr-output svg {
+    max-width: min(320px, 80vw);
+    margin-top: 1rem;
+    display: block;
+  }
+</style>

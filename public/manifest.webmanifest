@@ -1,0 +1,21 @@
+{
+  "name": "Madrasah Aliyah Malnu Kananga",
+  "short_name": "MA Malnu",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F3FFE5",
+  "theme_color": "#2E7D32",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
