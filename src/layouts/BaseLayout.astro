@@ -2,7 +2,41 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-const { title = 'Madrasah Aliyah Malnu Kananga', description = 'Portal resmi Madrasah Aliyah Malnu Kananga dengan layanan PPDB, e-learning, berita, dan beasiswa.' } = Astro.props;
+const {
+  title = 'Madrasah Aliyah Malnu Kananga',
+  description = 'Portal resmi Madrasah Aliyah Malnu Kananga dengan layanan PPDB, e-learning, berita, dan beasiswa.',
+  keywords: providedKeywords
+} = Astro.props;
+const keywords =
+  providedKeywords ??
+  'MA Malnu Kananga, Madrasah Aliyah, sekolah islam Pandeglang, PPDB MA, e-learning madrasah, informasi beasiswa';
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const ogImage = 'https://ma-malnukananga.sch.id/icons/icon-512.svg';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'Madrasah Aliyah Malnu Kananga',
+  url: canonicalUrl ?? 'https://ma-malnukananga.sch.id',
+  logo: ogImage,
+  description,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Jalan Pendidikan No. 1 Kananga',
+    addressLocality: 'Pandeglang',
+    addressRegion: 'Banten',
+    postalCode: '42251',
+    addressCountry: 'ID'
+  },
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'Customer Service',
+      telephone: '+62-253-123456',
+      areaServed: 'ID',
+      availableLanguage: ['id']
+    }
+  ]
+};
 ---
 <!DOCTYPE html>
 <html lang="id">
@@ -11,19 +45,29 @@ const { title = 'Madrasah Aliyah Malnu Kananga', description = 'Portal resmi Mad
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Madrasah Aliyah Malnu Kananga" />
     <meta name="theme-color" content="#2E7D32" />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="/icons/icon-192.svg" />
     <link rel="apple-touch-icon" type="image/svg+xml" href="/icons/icon-192.svg" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content="https://ma-malnukananga.sch.id" />
-    <meta property="og:image" content="https://ma-malnukananga.sch.id/icons/icon-512.svg" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:url" content={canonicalUrl ?? 'https://ma-malnukananga.sch.id'} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content="MA Malnu Kananga" />
+    <meta property="og:locale" content="id_ID" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:site" content="@malnukananga" />
+    <meta name="twitter:creator" content="@malnukananga" />
     <link rel="preconnect" href="https://static.cloudflareinsights.com" />
+    <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
     <script type="module">
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -34,31 +78,14 @@ const { title = 'Madrasah Aliyah Malnu Kananga', description = 'Portal resmi Mad
       }
     </script>
   </head>
-  <body>
+  <body class="theme-emerald">
     <a class="skip-link" href="#content">Lewati ke konten utama</a>
     <Header />
     <main id="content" role="main">
-      <slot />
+      <div class="page-shell">
+        <slot />
+      </div>
     </main>
     <Footer />
   </body>
 </html>
-<style>
-  .skip-link {
-    position: absolute;
-    top: 0.5rem;
-    left: 0.5rem;
-    background: #ffffff;
-    color: var(--color-primary);
-    padding: 0.5rem 1rem;
-    border-radius: 0.75rem;
-    transform: translateY(-200%);
-    transition: transform 150ms ease;
-    z-index: 999;
-  }
-
-  .skip-link:focus {
-    transform: translateY(0);
-    box-shadow: 0 0 0 3px rgba(0, 166, 166, 0.35);
-  }
-</style>

@@ -2,74 +2,188 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsList from '../components/NewsList.astro';
 const pageTitle = 'Madrasah Aliyah Malnu Kananga';
-const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, informasi alumni, berita pendidikan, dan layanan beasiswa.';
+const description =
+  'Portal resmi MA Malnu Kananga: PPDB online, e-learning, informasi alumni, berita pendidikan, dan layanan beasiswa.';
+const agenda = [
+  { tanggal: '25 Nov', judul: 'Webinar Digitalisasi Madrasah', detail: 'Live YouTube bersama tim TIK pukul 09.00 WIB.' },
+  { tanggal: '1 Des', judul: 'Batas akhir pengisian rapor RDM', detail: 'Guru wajib finalisasi nilai semester ganjil.' },
+  { tanggal: '5 Des', judul: 'Maulid Nabi bersama santri', detail: 'Aula utama pesantren, membawa buku maulid.' }
+];
 ---
 <BaseLayout title={`${pageTitle} | Beranda`} description={description}>
-  <section class="hero card">
-    <div>
-      <p class="eyebrow">Madrasah Aliyah Malnu Kananga</p>
+  <section class="home-hero card">
+    <div class="hero-copy">
+      <span class="badge">Madrasah Aliyah Malnu Kananga</span>
       <h1>
-        Mencetak generasi islami, unggul akademik dan berdaya saing global.
+        Mencetak generasi islami yang <span class="gradient-text">unggul, mandiri</span>, dan melek teknologi.
       </h1>
       <p>
-        Selamat datang di portal digital MA Malnu Kananga. Temukan layanan terpadu untuk peserta didik, guru, orang tua,
-        dan alumni dalam satu genggaman.
+        Selamat datang di portal digital MA Malnu Kananga. Semua informasi PPDB, e-learning, alumni, hingga layanan
+        administrasi tersedia dalam satu tempat yang cepat diakses dari gawai apa pun.
       </p>
       <div class="cta-group">
         <a class="button" href="/ppdb">Daftar PPDB</a>
         <a class="button secondary" href="/e-learning">Masuk E-Learning</a>
+        <a class="text-link" href="/kontak">Butuh bantuan?</a>
       </div>
-    </div>
-    <div class="hero-card">
-      <h2>Agenda Terkini</h2>
-      <ul>
-        <li><strong>25 Nov:</strong> Webinar Digitalisasi Madrasah</li>
-        <li><strong>1 Des:</strong> Batas akhir pengisian rapor RDM</li>
-        <li><strong>5 Des:</strong> Kegiatan Maulid Nabi bersama santri</li>
+      <ul class="hero-stats">
+        <li>
+          <strong>1.200+</strong>
+          <span>Siswa aktif dan santri pondok</span>
+        </li>
+        <li>
+          <strong>98%</strong>
+          <span>Kelulusan ke PTN dan perguruan tinggi islam</span>
+        </li>
+        <li>
+          <strong>24/7</strong>
+          <span>Layanan digital siap diakses kapan saja</span>
+        </li>
       </ul>
     </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="halo halo-1"></div>
+      <div class="halo halo-2"></div>
+      <article class="agenda-card">
+        <h2>Agenda Terkini</h2>
+        <ul>
+          {agenda.map((item) => (
+            <li>
+              <span class="agenda-date">{item.tanggal}</span>
+              <div>
+                <strong>{item.judul}</strong>
+                <p>{item.detail}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </article>
+    </div>
   </section>
 
-  <section class="grid highlights">
-    <article class="card">
-      <h2 class="section-title">PPDB Online 2025</h2>
+  <section class="page-section">
+    <div class="section-header">
+      <span class="section-kicker">Layanan digital</span>
+      <h2 class="section-title">Satu portal untuk seluruh warga madrasah</h2>
       <p>
-        Pendaftaran peserta didik baru kini serba daring. Siapkan berkas dan lengkapi formulir secara mudah dengan
-        verifikasi otomatis.
+        MA Malnu Kananga menghadirkan pengalaman digital yang terintegrasi, memudahkan siswa, guru, dan orang tua dalam
+        mengakses informasi akademik maupun pesantren.
       </p>
-      <a class="button" href="/ppdb">Pelajari Alur</a>
-    </article>
-    <article class="card">
-      <h2 class="section-title">E-Learning</h2>
-      <p>
-        Akses materi pembelajaran, jadwal kelas, dan pengumuman penting kapan pun dengan modul digital yang terhubung
-        dengan guru pengampu.
-      </p>
-      <a class="button" href="/e-learning">Lihat Materi</a>
-    </article>
-    <article class="card">
-      <h2 class="section-title">Jejaring Alumni</h2>
-      <p>
-        Terhubung dengan alumni lintas angkatan, bangun kolaborasi karier, dan bagikan kisah inspiratif melalui katalog
-        alumni interaktif.
-      </p>
-      <a class="button" href="/alumni">Data Alumni</a>
-    </article>
+    </div>
+    <div class="feature-grid triple">
+      <article class="feature-card">
+        <span class="badge">PPDB 2025</span>
+        <h3>Pendaftaran serba daring</h3>
+        <p>
+          Isi formulir, unggah berkas, dan dapatkan nomor pendaftaran secara otomatis. Sistem validasi memastikan data
+          sesuai dengan dokumen resmi.
+        </p>
+        <a class="text-link" href="/ppdb">Pelajari alur PPDB</a>
+      </article>
+      <article class="feature-card">
+        <span class="badge">LMS Terintegrasi</span>
+        <h3>E-Learning adaptif</h3>
+        <p>
+          Modul digital, jadwal kelas virtual, dan pengumuman penting tersaji realtime. Akses melalui perangkat seluler
+          tanpa mengurangi performa.
+        </p>
+        <a class="text-link" href="/e-learning">Masuk ke kelas daring</a>
+      </article>
+      <article class="feature-card">
+        <span class="badge">Jejaring Alumni</span>
+        <h3>Koneksi karier lintas angkatan</h3>
+        <p>
+          Raih kesempatan kolaborasi dan mentoring. Katalog alumni membantu siswa mengenal profil inspiratif setiap
+          lulusan.
+        </p>
+        <a class="text-link" href="/alumni">Lihat data alumni</a>
+      </article>
+    </div>
   </section>
 
-  <section class="card info-section">
-    <h2 class="section-title">Layanan Cepat</h2>
-    <div class="grid grid-2 quick-service">
-      <div>
-        <h3>Rapor Digital Madrasah</h3>
-        <p>Gunakan portal resmi RDM untuk melihat nilai dan progres belajar secara real-time.</p>
+  <section class="split-grid">
+    <article class="card focus-card">
+      <span class="section-kicker">Akademik</span>
+      <h2>Rapor Digital Madrasah (RDM)</h2>
+      <p>
+        RDM menyajikan rapor elektronik yang aman dengan autentikasi berlapis. Orang tua dapat memantau progres belajar
+        secara real-time.
+      </p>
+      <ul class="focus-list">
+        <li>Pemutakhiran nilai langsung dari guru pengampu</li>
+        <li>Integrasi absensi dan catatan sikap</li>
+        <li>Unduhan rapor resmi dalam format PDF</li>
+      </ul>
+      <div class="cta-group">
         <a class="button" href="https://rdm.ma-malnukananga.sch.id" target="_blank" rel="noopener">Masuk RDM</a>
+        <a class="text-link" href="/arsip">Lihat arsip digital</a>
       </div>
-      <div>
-        <h3>Absensi QR</h3>
-        <p>Pindai QR di setiap kegiatan untuk pencatatan kehadiran otomatis dengan proteksi token.</p>
-        <a class="button" href="/absensi">Panduan Absensi</a>
+    </article>
+    <article class="card focus-card">
+      <span class="section-kicker">Kehadiran</span>
+      <h2>Absensi QR dengan token aman</h2>
+      <p>
+        Setiap kegiatan dibekali QR unik, memastikan pencatatan kehadiran yang valid dan dapat diaudit.
+      </p>
+      <ol class="steps">
+        <li>Panitia membuat QR melalui portal admin yang terlindungi.</li>
+        <li>Siswa memindai QR dan token otomatis terisi.</li>
+        <li>Verifikasi Cloudflare Turnstile mencegah bot.</li>
+        <li>Status hadir tampil seketika di layar.</li>
+      </ol>
+      <div class="cta-group">
+        <a class="button" href="/absen">Verifikasi kehadiran</a>
+        <a class="text-link" href="/absensi">Pelajari panduan</a>
       </div>
+    </article>
+  </section>
+
+  <section class="card value-section">
+    <div class="section-header">
+      <span class="section-kicker">Nilai inti</span>
+      <h2>Menggabungkan pesantren, sains, dan kemandirian digital</h2>
+      <p>
+        Kurikulum kami memadukan ilmu keagamaan yang mendalam dengan pengetahuan umum dan keterampilan teknologi,
+        mempersiapkan siswa menghadapi tantangan zaman.
+      </p>
+    </div>
+    <div class="chip-group">
+      <span class="chip">Tahfiz &amp; kitab kuning</span>
+      <span class="chip">STEAM project</span>
+      <span class="chip">Laboratorium terpadu</span>
+      <span class="chip">Program bahasa asing</span>
+      <span class="chip">Pembinaan kewirausahaan</span>
+    </div>
+  </section>
+
+  <section class="card faq-section">
+    <div class="section-header">
+      <span class="section-kicker">Pertanyaan umum</span>
+      <h2>Informasi cepat untuk orang tua dan siswa</h2>
+      <p>Kami merangkum kebutuhan informasi utama yang sering ditanyakan calon peserta didik.</p>
+    </div>
+    <div class="details-group">
+      <details>
+        <summary>Bagaimana alur pendaftaran PPDB daring?</summary>
+        <p>
+          Calon siswa membuat akun, mengisi formulir beserta berkas, lalu melakukan verifikasi token. Hasil seleksi akan
+          diumumkan melalui portal dan SMS resmi.
+        </p>
+      </details>
+      <details>
+        <summary>Apakah tersedia asrama?</summary>
+        <p>
+          Ya, MA Malnu Kananga terintegrasi dengan pondok pesantren. Siswa mendapatkan pengasuhan 24 jam dan pembinaan
+          karakter islami.
+        </p>
+      </details>
+      <details>
+        <summary>Bagaimana akses rapor orang tua?</summary>
+        <p>
+          Orang tua dapat login ke RDM menggunakan akun wali. Notifikasi perubahan nilai dikirim melalui email dan
+          WhatsApp gateway.
+        </p>
+      </details>
     </div>
   </section>
 
@@ -77,63 +191,151 @@ const description = 'Portal resmi MA Malnu Kananga: PPDB online, e-learning, inf
   <NewsList title="Informasi Beasiswa" endpoint="/api/scholarships" emptyText="Belum ada data beasiswa." />
 </BaseLayout>
 <style>
-  .hero {
+  .home-hero {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    background: radial-gradient(circle at 20% -10%, rgba(0, 166, 166, 0.18), transparent 60%),
+      rgba(255, 255, 255, 0.82);
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.4rem, 6vw, 3.1rem);
+  }
+
+  .hero-copy p {
+    max-width: 42rem;
+  }
+
+  .hero-visual {
+    position: relative;
+    min-height: 260px;
+    display: grid;
+    place-items: center;
+  }
+
+  .halo {
+    position: absolute;
+    border-radius: 999px;
+    filter: blur(0);
+    opacity: 0.5;
+    animation: pulse 10s ease-in-out infinite;
+  }
+
+  .halo-1 {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(46, 125, 50, 0.35), transparent 60%);
+  }
+
+  .halo-2 {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 166, 166, 0.35), transparent 60%);
+    animation-delay: 2s;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(0.95);
+      opacity: 0.55;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.75;
+    }
+  }
+
+  .agenda-card {
+    position: relative;
+    z-index: 1;
+    width: min(360px, 90%);
+    background: rgba(12, 34, 16, 0.85);
+    color: #f3ffe5;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 18px 40px rgba(12, 34, 16, 0.35);
+  }
+
+  .agenda-card h2 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: #f3ffe5;
+  }
+
+  .agenda-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .agenda-card li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    align-items: start;
+  }
+
+  .agenda-date {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 1.1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+  }
+
+  .agenda-card p {
+    color: rgba(243, 255, 229, 0.8);
+    margin-bottom: 0;
+  }
+
+  .focus-card {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .focus-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .focus-list li::before {
+    content: '▹';
+    color: var(--color-secondary);
+    margin-right: 0.5rem;
+  }
+
+  .steps {
+    display: grid;
+    gap: 0.6rem;
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-muted-soft);
+  }
+
+  .value-section {
     display: grid;
     gap: 1.5rem;
-    padding: clamp(1.5rem, 3vw, 3rem);
-    background: radial-gradient(circle at top right, rgba(0, 166, 166, 0.25), transparent 55%), rgba(255, 255, 255, 0.8);
   }
 
-  .eyebrow {
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--color-secondary);
-    font-weight: 600;
+  .faq-section {
+    display: grid;
+    gap: 1.5rem;
   }
 
-  h1 {
-    font-size: clamp(2rem, 5vw, 2.9rem);
-    margin-bottom: 0.5rem;
-  }
-
-  .cta-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .secondary {
-    background: rgba(0, 166, 166, 0.15);
-    color: var(--color-secondary);
-  }
-
-  .hero-card {
-    border-radius: 1.5rem;
-    background: rgba(46, 125, 50, 0.08);
-    padding: 1.25rem;
-    box-shadow: inset 0 0 0 1px rgba(46, 125, 50, 0.15);
-  }
-
-  .highlights {
-    margin-top: 2rem;
-  }
-
-  .info-section {
-    margin-top: 2rem;
-  }
-
-  .quick-service {
-    margin-top: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .hero {
-      grid-template-columns: 3fr 2fr;
+  @media (min-width: 960px) {
+    .home-hero {
+      grid-template-columns: 1.3fr 1fr;
       align-items: center;
-    }
-
-    .highlights {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 </style>

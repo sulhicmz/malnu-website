@@ -14,7 +14,9 @@ const base64 = (value: string) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
   let str = value;
   let output = '';
-  for (let block = 0, charCode: number, i = 0, map = chars; str.charAt(i | 0) || ((map = '='), i % 1); output += map.charAt(63 & (block >> (8 - (i % 1) * 8)))) {
+  for (let block = 0, charCode: number, i = 0, map = chars; str.charAt(i | 0) || ((map = '='), i % 1); output += map.charAt(
+    63 & (block >> (8 - (i % 1) * 8))
+  )) {
     charCode = str.charCodeAt((i += 3 / 4));
     if (charCode > 0xff) {
       throw new Error('Karakter tidak valid untuk base64.');
@@ -33,9 +35,17 @@ if (authHeader !== expected) {
   });
 }
 ---
-<BaseLayout title="Generator QR Absensi" description="Buat token absensi sekali pakai untuk kegiatan MA Malnu Kananga.">
-  <section class="card">
+<BaseLayout
+  title="Generator QR Absensi"
+  description="Buat token absensi sekali pakai untuk kegiatan MA Malnu Kananga."
+>
+  <section class="card qrcode-hero">
+    <span class="section-kicker">Panel admin</span>
     <h1 class="section-title">Generator QR Absensi</h1>
+    <p>Buat token absensi sekali pakai dengan masa berlaku tertentu. Berkas SVG siap dicetak atau dipasang di layar.</p>
+  </section>
+
+  <section class="card qrcode-card">
     <form class="qr-form" aria-describedby="qr-status">
       <label>
         ID Acara/Kelas
@@ -46,7 +56,7 @@ if (authHeader !== expected) {
         <input type="number" name="valid" min="5" max="480" value="60" required />
       </label>
       <button type="submit">Buat QR</button>
-      <p id="qr-status" role="status"></p>
+      <p id="qr-status" role="status" class="qr-status"></p>
     </form>
     <div class="qr-output" aria-live="polite"></div>
   </section>
@@ -83,14 +93,27 @@ if (authHeader !== expected) {
   });
 </script>
 <style>
-  .qr-form {
+  .qrcode-hero,
+  .qrcode-card {
     display: grid;
     gap: 1rem;
   }
 
+  .qr-output {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+  }
+
   .qr-output svg {
     max-width: min(320px, 80vw);
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     display: block;
+  }
+
+  .qr-status {
+    min-height: 1.5rem;
+    color: var(--color-secondary);
+    font-weight: 600;
   }
 </style>

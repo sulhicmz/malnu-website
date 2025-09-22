@@ -3,13 +3,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import TurnstileWidget from '../../components/TurnstileWidget.astro';
 const presetToken = Astro.url.searchParams.get('token') ?? '';
 ---
-<BaseLayout title="Verifikasi Absensi" description="Halaman verifikasi absensi QR MA Malnu Kananga dengan token sekali pakai.">
-  <section class="card">
-    <h1 class="section-title">Verifikasi Kehadiran</h1>
+<BaseLayout
+  title="Verifikasi Absensi"
+  description="Halaman verifikasi absensi QR MA Malnu Kananga dengan token sekali pakai."
+>
+  <section class="card absen-hero">
+    <span class="section-kicker">Verifikasi hadir</span>
+    <h1 class="section-title">Catat kehadiran dalam hitungan detik</h1>
     <p>
-      Token absensi digunakan satu kali dan hanya berlaku dalam rentang waktu tertentu. Masukkan NISN dan token yang
-      diterima dari QR untuk mencatat kehadiran.
+      Masukkan NISN dan token yang diterima dari QR kegiatan. Token hanya dapat digunakan satu kali dan memiliki batas
+      waktu tertentu untuk menjaga keamanan data.
     </p>
+  </section>
+
+  <section class="card absen-card">
     <form class="absen-form" aria-describedby="absen-status">
       <label>
         NISN
@@ -21,7 +28,7 @@ const presetToken = Astro.url.searchParams.get('token') ?? '';
       </label>
       <TurnstileWidget action="absensi" />
       <button type="submit">Catat Kehadiran</button>
-      <p id="absen-status" role="status"></p>
+      <p id="absen-status" role="status" class="absen-status"></p>
     </form>
   </section>
 </BaseLayout>
@@ -54,16 +61,24 @@ const presetToken = Astro.url.searchParams.get('token') ?? '';
   });
 </script>
 <style>
+  .absen-hero {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .absen-card {
+    display: grid;
+    gap: 1rem;
+  }
+
   .absen-form {
     display: grid;
     gap: 1rem;
   }
 
-  input,
-  textarea {
-    padding: 0.75rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(46, 125, 50, 0.25);
-    background: rgba(255, 255, 255, 0.9);
+  .absen-status {
+    min-height: 1.5rem;
+    font-weight: 600;
+    color: var(--color-secondary);
   }
 </style>

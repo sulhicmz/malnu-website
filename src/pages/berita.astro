@@ -3,5 +3,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import NewsList from '../components/NewsList.astro';
 ---
 <BaseLayout title="Berita Pendidikan" description="Kumpulan berita pendidikan terkini untuk warga MA Malnu Kananga.">
+  <section class="card berita-hero">
+    <span class="section-kicker">Berita terkini</span>
+    <h1 class="section-title">Sorotan pendidikan dan kegiatan madrasah</h1>
+    <p>
+      Pantau perkembangan dunia pendidikan, kebijakan Kemenag, dan kegiatan unggulan MA Malnu Kananga melalui kurasi
+      berita terpercaya berikut.
+    </p>
+  </section>
   <NewsList title="Berita Pendidikan" endpoint="/api/news" emptyText="Belum ada berita." />
 </BaseLayout>
+<style>
+  .berita-hero {
+    display: grid;
+    gap: 1rem;
+  }
+</style>

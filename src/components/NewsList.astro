@@ -3,7 +3,10 @@ const { endpoint = '/api/news', title = 'Berita Terbaru', emptyText = 'Belum ada
 ---
 <section class="card news-section" aria-live="polite">
   <div class="section-heading">
-    <h2 class="section-title">{title}</h2>
+    <div>
+      <span class="section-kicker">Pembaruan</span>
+      <h2 class="section-title">{title}</h2>
+    </div>
     <button class="refresh" type="button">Segarkan</button>
   </div>
   <div class="news-list" data-endpoint={endpoint} data-empty={emptyText}>
@@ -30,10 +33,12 @@ const { endpoint = '/api/news', title = 'Berita Terbaru', emptyText = 'Belum ada
         .map(
           (item) => `
             <article class="news-card">
-              <h3>${item.title}</h3>
-              <p class="meta">${item.source} · ${new Date(item.published_at).toLocaleDateString('id-ID')}</p>
+              <header>
+                <h3>${item.title}</h3>
+                <p class="meta">${item.source} · ${new Date(item.published_at).toLocaleDateString('id-ID')}</p>
+              </header>
               <p>${item.summary ?? ''}</p>
-              <a class="button" href="${item.link}" target="_blank" rel="noopener">Baca</a>
+              <a class="button secondary" href="${item.link}" target="_blank" rel="noopener">Baca selengkapnya</a>
             </article>
           `
         )
@@ -60,30 +65,59 @@ const { endpoint = '/api/news', title = 'Berita Terbaru', emptyText = 'Belum ada
   }
 
   .refresh {
-    background: rgba(0, 166, 166, 0.18);
-    color: var(--color-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
     padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 166, 166, 0.22);
+    background: rgba(0, 166, 166, 0.12);
+    color: var(--color-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+
+  .refresh:hover,
+  .refresh:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px rgba(0, 166, 166, 0.25);
   }
 
   .news-list {
     display: grid;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   .news-card {
-    border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1rem;
-    box-shadow: var(--shadow-soft);
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(46, 125, 50, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    animation: fadeIn 400ms ease;
   }
 
   .news-card h3 {
-    margin-top: 0;
+    margin: 0;
   }
 
   .news-card .meta {
-    font-size: 0.85rem;
-    color: rgba(15, 31, 16, 0.7);
+    font-size: 0.9rem;
+    color: rgba(15, 31, 16, 0.65);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>

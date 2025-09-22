@@ -4,23 +4,72 @@ import { getCollection } from 'astro:content';
 const entries = await getCollection('profil');
 const ordered = entries.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
-<BaseLayout title="Profil | MA Malnu Kananga" description="Profil lengkap MA Malnu Kananga meliputi visi misi, sejarah, dan nilai pesantren.">
-  <section class="card">
-    <h1 class="section-title">Profil Madrasah</h1>
-    {ordered.map((item) => (
-      <article class="profil-block">
+<BaseLayout
+  title="Profil | MA Malnu Kananga"
+  description="Profil lengkap MA Malnu Kananga meliputi visi misi, sejarah, dan nilai pesantren."
+>
+  <section class="card profile-hero">
+    <span class="section-kicker">Profil Madrasah</span>
+    <h1 class="section-title">Menjaga tradisi pesantren, menguatkan prestasi akademik</h1>
+    <p>
+      MA Malnu Kananga merupakan madrasah aliyah yang berakar pada nilai pesantren salafiyah dengan inovasi pembelajaran
+      modern. Berikut rangkuman visi, misi, sejarah, dan tata kelola lembaga.
+    </p>
+  </section>
+
+  <section class="profile-grid">
+    {ordered.map((item, index) => (
+      <article class="card profile-card">
+        <div class="profile-number">{String(index + 1).padStart(2, '0')}</div>
         <h2>{item.data.title}</h2>
-        <div set:html={item.body}></div>
+        <div class="profile-content" set:html={item.body}></div>
       </article>
     ))}
   </section>
 </BaseLayout>
 <style>
-  .profil-block {
-    margin-bottom: 2rem;
+  .profile-hero {
+    display: grid;
+    gap: 1rem;
   }
 
-  .profil-block h2 {
-    color: var(--color-secondary);
+  .profile-grid {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .profile-card {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+    padding-top: 2.5rem;
+  }
+
+  .profile-number {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: rgba(0, 166, 166, 0.12);
+  }
+
+  .profile-content :global(p) {
+    color: var(--color-muted-soft);
+  }
+
+  .profile-content :global(ul) {
+    padding-left: 1.2rem;
+    color: var(--color-muted-soft);
+  }
+
+  @media (min-width: 880px) {
+    .profile-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .profile-card:nth-child(odd) {
+      transform: translateY(10px);
+    }
   }
 </style>
