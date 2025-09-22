@@ -11,17 +11,10 @@ const navItems = [
   { href: '/beasiswa', label: 'Beasiswa' },
   { href: '/kontak', label: 'Kontak' }
 ];
-const externalItems = [
-  { href: 'https://emis.kemenag.go.id', label: 'EMIS' },
-  { href: 'https://vervalpd.data.kemdikbud.go.id', label: 'VERVAL PD' },
-  { href: 'https://simpatika.kemenag.go.id', label: 'SIMPATIKA' },
-  { href: 'https://nisn.data.kemdikbud.go.id', label: 'Cek NISN' },
-  { href: 'https://rdm.ma-malnukananga.sch.id', label: 'RDM' }
-];
 const currentPath = Astro.url.pathname;
 const isActive = (href: string) => currentPath === href || (href !== '/' && currentPath.startsWith(href));
 ---
-<header class="site-header" role="banner">
+<header class="site-header" role="banner" data-header>
   <div class="header-shell">
     <a class="brand" href="/">
       <span class="brand-symbol" aria-hidden="true">MA</span>
@@ -30,11 +23,11 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
         <span>Madrasah Aliyah Modern</span>
       </span>
     </a>
-    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" data-toggle>
       <span class="sr-only">Buka navigasi utama</span>
       <span class="menu-icon" aria-hidden="true"></span>
     </button>
-    <nav id="primary-navigation" class="primary-nav" aria-label="Navigasi utama">
+    <nav id="primary-navigation" class="primary-nav" aria-label="Navigasi utama" data-nav>
       <ul>
         {navItems.map((item) => (
           <li>
@@ -44,20 +37,11 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
       </ul>
     </nav>
   </div>
-  <div class="header-links" aria-label="Tautan resmi eksternal">
-    <div class="links-track">
-      {externalItems.map((item) => (
-        <a href={item.href} target="_blank" rel="noopener" class="chip-link">
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </div>
 </header>
-<script>
-  const header = document.currentScript?.closest('.site-header');
-  const toggle = header?.querySelector('.menu-toggle');
-  const nav = header?.querySelector('.primary-nav');
+<script is:inline>
+  const header = document.querySelector('[data-header]');
+  const toggle = header?.querySelector('[data-toggle]');
+  const nav = header?.querySelector('[data-nav]');
   const navLinks = nav?.querySelectorAll('a');
 
   function closeMenu() {
@@ -199,12 +183,16 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
     background: rgba(11, 27, 16, 0.75);
     backdrop-filter: blur(24px);
     padding: 6rem 1.5rem 2rem;
-    transform: translateY(-100%);
-    transition: transform var(--transition-base);
+    transform: translateY(calc(-100% - 3rem));
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--transition-base), opacity var(--transition-base);
   }
 
   .primary-nav.is-open {
     transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .primary-nav ul {
@@ -233,51 +221,6 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
     background: linear-gradient(120deg, rgba(46, 125, 50, 0.9), rgba(0, 166, 166, 0.9));
     color: #ffffff;
     box-shadow: var(--shadow-soft);
-  }
-
-  .header-links {
-    position: relative;
-    overflow: hidden;
-    border-radius: 999px;
-    border: 1px solid rgba(0, 166, 166, 0.18);
-    background: rgba(255, 255, 255, 0.75);
-  }
-
-  .links-track {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.45rem 0.75rem;
-    animation: marquee 18s linear infinite;
-  }
-
-  .chip-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    background: rgba(0, 166, 166, 0.12);
-    color: var(--color-secondary);
-    font-size: 0.85rem;
-    border: 1px solid rgba(0, 166, 166, 0.18);
-    transition: background var(--transition-base), color var(--transition-base);
-    white-space: nowrap;
-  }
-
-  .chip-link:hover,
-  .chip-link:focus {
-    background: rgba(0, 166, 166, 0.2);
-    color: var(--color-primary);
-  }
-
-  @keyframes marquee {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-30%);
-    }
   }
 
   @media (min-width: 960px) {
@@ -312,18 +255,11 @@ const isActive = (href: string) => currentPath === href || (href !== '/' && curr
       box-shadow: none;
     }
 
-    .header-links {
-      padding: 0.2rem;
-    }
-
-    .links-track {
-      animation-duration: 22s;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .links-track {
-      animation: none;
+    .primary-nav {
+      transition: none;
     }
   }
 </style>
